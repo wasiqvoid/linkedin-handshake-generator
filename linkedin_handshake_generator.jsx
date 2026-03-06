@@ -1,0 +1,587 @@
+import React, { useState } from 'react';
+import { Copy, Sparkles, ChevronRight, Linkedin, UserPlus } from 'lucide-react';
+
+export default function PostGenerator() {
+  const [currentDay, setCurrentDay] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const [activePlatform, setActivePlatform] = useState('linkedin');
+
+  const postThemes = [
+    {
+      day: "Monday",
+      theme: "Current Learning",
+      title: "Building with Modern ML Stack",
+      linkedin: `Just finished clustering analysis in my statistical learning course this semester. Applied k-means, hierarchical clustering, and silhouette analysis to a real dataset.
+
+The realization? Raw clustering is 20% of the work. The other 80% is feature engineering, distance metrics selection, and interpreting what the clusters actually mean for business.
+
+This is what separates academic ML from production ML. 🚀
+
+#MachineLearning #DataScience #Clustering`,
+      handshake: `Building with Modern ML Stack 📊
+
+Currently taking Statistical Learning this semester - just wrapped up clustering analysis. Applied k-means, hierarchical clustering, and silhouette analysis to real data.
+
+Key insight: Feature engineering (80%) > raw clustering (20%). This is the difference between academic ML and production systems.
+
+Looking for Data Science/ML Engineering internships where I can apply these skills to real business problems.
+
+Open to: Fintech | Healthcare | SaaS`,
+      focus: "Shows current coursework + practical mindset"
+    },
+    {
+      day: "Tuesday",
+      theme: "AI/LLM Project",
+      title: "Building an AI SQL Assistant",
+      linkedin: `Shipped an AI-powered SQL query assistant: natural language → SQL queries in production.
+
+Stack: OpenAI GPT + LLaMA + Streamlit + PostgreSQL. Non-technical users can now query databases without touching SQL.
+
+The hard part wasn't the LLM integration — it was prompt engineering, input validation, and handling edge cases. LLMOps > raw model training.
+
+Live demo: wasiq-aisql.streamlit.app
+
+#LLM #GenerativeAI #MLOps`,
+      handshake: `AI-Powered SQL Query Assistant in Production 🚀
+
+Built a generative AI app that converts natural language → SQL queries. Non-technical users can now query databases instantly.
+
+Tech: OpenAI GPT + LLaMA + Streamlit + PostgreSQL
+What I learned: Prompt engineering + input validation + edge case handling = LLMOps (harder than model training)
+
+Live demo: wasiq-aisql.streamlit.app
+
+Seeking: ML Engineering / Data Science internships
+Skills: LLMs, Prompt Engineering, Full-stack deployment`,
+      focus: "Production-ready AI project + live demo link"
+    },
+    {
+      day: "Wednesday",
+      theme: "Banking/Fraud Detection",
+      title: "30% Better Fraud Detection",
+      linkedin: `At Bank of Khyber, I built fraud detection models that caught 30% more fraud while reducing false positives by 20%.
+
+How? Benchmarked Logistic Regression, Random Forest, XGBoost, and Neural Networks using Precision/Recall/ROC-AUC — not just accuracy.
+
+Then SMOTE + threshold tuning. Class imbalance is the elephant in the room most people ignore.
+
+Fraud detection = lessons that apply to any classification problem.
+
+#FraudDetection #MachineLearning #BankingAI`,
+      handshake: `Fraud Detection at Scale: 30% Accuracy Gain 💰
+
+At Bank of Khyber, built ML models that improved fraud detection by 30% while reducing false positives by 20%.
+
+Approach:
+• Benchmarked 4+ models (LR, RF, XGBoost, Neural Networks)
+• Evaluated by Precision/Recall/ROC-AUC (not just accuracy)
+• Applied SMOTE for class imbalance handling
+• Tuned decision thresholds based on business metrics
+
+Result: Production fraud prevention system protecting millions in transactions.
+
+Seeking: Data Science / ML Engineering internships in fintech/banking`,
+      focus: "Real impact metrics + advanced techniques"
+    },
+    {
+      day: "Thursday",
+      theme: "NLP Deep Dive",
+      title: "Financial Sentiment → Stock Predictions",
+      linkedin: `Building an NLP pipeline: 600K+ financial news headlines → 7,000+ stock tickers → sentiment features → stock movement predictions.
+
+Tech stack: FinBERT (Hugging Face Transformers) for sentiment + temporal feature engineering (rolling averages, momentum) + XGBoost/LSTM for predictions.
+
+Plus SHAP explainability to answer: "Why is sentiment a strong predictor for stock XYZ?"
+
+Applying NLP to finance = intersection of linguistics + quantitative analysis. Fascinating problem space.
+
+#NLP #FinancialML #Transformers`,
+      handshake: `Financial Sentiment Analysis for Stock Prediction 📈
+
+Building a scalable NLP system:
+→ 600K+ financial news headlines
+→ 7,000+ stock tickers  
+→ Sentiment extraction (FinBERT)
+→ Stock movement predictions (XGBoost + LSTM)
+
+Technology: Hugging Face Transformers, temporal feature engineering, SHAP explainability
+
+Outcome: Understanding how market sentiment drives stock movements at scale.
+
+Interested in: ML Engineering roles in fintech, quantitative finance
+Skills: NLP, Transformers, Time Series, Feature Engineering`,
+      focus: "Cutting-edge NLP application"
+    },
+    {
+      day: "Friday",
+      theme: "MLOps/Deployment",
+      title: "End-to-End ML in Production",
+      linkedin: `Just shipped a complete ML pipeline: data ingestion → preprocessing → 16 classification experiments → model selection → production deployment.
+
+Full stack: FastAPI (backend) + Streamlit (frontend) + Docker + MLflow (experiment tracking) + Render (cloud).
+
+The lesson? Building the model is 30%. Deploying it reliably is 70%.
+
+If you're only writing Jupyter notebooks, you're not actually building products.
+
+#MLOps #Docker #FastAPI`,
+      handshake: `Complete ML Pipeline: Lab to Production 🚀
+
+Just deployed an end-to-end machine learning system:
+
+Pipeline: Data Ingestion → Preprocessing → Feature Engineering → 16 Classification Experiments → Model Selection → Production Deployment
+
+Tech Stack:
+• Backend: FastAPI with REST endpoints
+• Frontend: Streamlit UI
+• Infrastructure: Docker + docker-compose
+• Experiment Tracking: MLflow + DagsHub
+• Hosting: Render cloud platform
+
+Key Learning: Model building = 30% of work. Deployment + reliability = 70%.
+
+Seeking: MLOps / ML Engineering internships`,
+      focus: "Production ML maturity"
+    },
+    {
+      day: "Saturday",
+      theme: "Healthcare AI",
+      title: "Predicting Patient Readmission",
+      linkedin: `At Alkhidmat Hospital, I built ML models predicting patient readmission rates with 90%+ accuracy.
+
+But accuracy isn't the full story. I also:
+• Cleaned data (20% quality improvement)
+• Built validation workflows (15% fewer errors)
+• Reduced reporting time by 30%
+
+Healthcare AI requires both statistical rigor AND operational excellence. Real impact = model + infrastructure.
+
+#HealthcareAI #DataScience #ML`,
+      handshake: `Healthcare ML: Patient Readmission Prediction 🏥
+
+At Alkhidmat Hospital, developed predictive models identifying patients at high readmission risk.
+
+Results:
+• 90%+ prediction accuracy on test sets
+• 20% improvement in data quality
+• 15% reduction in data entry errors
+• 30% faster clinical reporting
+
+Impact: Hospital can now proactively intervene with high-risk patients, improving outcomes and reducing costs.
+
+Skills Applied: Python, TensorFlow, Scikit-learn, EDA, Data Validation
+
+Open to: Healthcare analytics / Data Science internships`,
+      focus: "Real-world healthcare application"
+    },
+    {
+      day: "Sunday",
+      theme: "Career Reflection",
+      title: "What I've Learned Building ML Systems",
+      linkedin: `3+ years of building ML systems across banking, healthcare, and fintech. Here's what actually matters:
+
+1. Feature engineering > model choice
+2. Class imbalance is everywhere (use SMOTE)
+3. SHAP > black boxes (interpretability matters)
+4. Docker/MLflow/FastAPI = career skills (not optional)
+5. Stakeholder communication > fancy algorithms
+
+Looking for Data Science/ML Engineering internships where I can build intelligent systems that create real business value.
+
+Open to fintech, healthcare, SaaS. Let's build something.
+
+#DataScience #MLEngineering #Hiring`,
+      handshake: `3 Years Building ML Systems: What I've Learned 💡
+
+From banking fraud detection to healthcare readmission prediction, here are the lessons that actually matter:
+
+1️⃣ Feature engineering > model selection (always)
+2️⃣ Class imbalance is everywhere → SMOTE/threshold tuning
+3️⃣ Black boxes lose trust → SHAP explainability is mandatory
+4️⃣ MLOps skills are non-negotiable (Docker, FastAPI, MLflow)
+5️⃣ Business impact > technical complexity
+
+Currently seeking: Data Science / ML Engineering internships
+
+Target companies: Fintech | Healthcare AI | SaaS platforms
+Ready to: Build intelligent systems that drive real business value`,
+      focus: "Portfolio narrative + clear ask"
+    },
+    {
+      day: "Monday (Week 2)",
+      theme: "Feature Engineering",
+      title: "The Art of Feature Engineering",
+      linkedin: `Spent today engineering features from 1M+ bank transactions:
+• Merchant risk scores (categorical embeddings)
+• Transaction velocity (sliding window aggregations)
+• Amount deviations (z-score based anomalies)
+
+Raw data → meaningful features → better models. This is where 80% of ML work lives.
+
+Your model is only as good as your features. Garbage in = garbage out. Always.
+
+#FeatureEngineering #DataScience #ML`,
+      handshake: `Feature Engineering at Scale: 1M+ Transactions 📊
+
+Building ML systems means mastering feature engineering. Today's work:
+
+Features Created:
+✓ Merchant risk scores (categorical embeddings)
+✓ Transaction velocity flags (sliding windows)
+✓ Amount deviation anomalies (z-score normalization)
+
+Reality: Features > model choice. Spend 80% time on features, 20% on model selection.
+
+Tech: Python, Pandas, SQL, statistical analysis
+
+Seeking internships where I can build production ML systems with real impact.`,
+      focus: "Technical depth on underrated skill"
+    },
+    {
+      day: "Tuesday (Week 2)",
+      theme: "ETL Pipelines",
+      title: "Building Scalable Data Pipelines",
+      linkedin: `Built reproducible ETL pipelines at Bank of Khyber handling 1M+ transactions across SQL + AWS S3.
+
+Stack: Python/Pandas (transformation) + SQL (schema validation) + AWS S3 (scalable storage).
+
+The payoff? Data moved from chaotic CSVs to structured, versioned, scalable infrastructure.
+
+If you're manually moving data around, it's time to build pipelines.
+
+#DataEngineering #ETL #AWS`,
+      handshake: `Building ETL Pipelines for 1M+ Transactions 🔄
+
+At Bank of Khyber, designed reproducible data pipelines handling massive transaction volumes.
+
+Architecture:
+• Data ingestion: Python/Pandas transformations
+• Validation: SQL schema checks + type casting
+• Storage: AWS S3 (scalable, versioned, secure)
+• Reliability: Automated monitoring + error handling
+
+Before: Manual CSV shuffling (error-prone, unscalable)
+After: Production ETL infrastructure
+
+Skills: Python, SQL, AWS S3, data validation, pipeline design
+
+Open to: Data Engineering / ML Engineering internships`,
+      focus: "Modern data infrastructure"
+    },
+    {
+      day: "Wednesday (Week 2)",
+      theme: "Model Evaluation",
+      title: "Why Accuracy Lies",
+      linkedin: `Training your model? Don't stop at accuracy.
+
+Precision, Recall, F1-Score, ROC-AUC. When you have imbalanced data (95% negative, 5% positive), accuracy is meaningless.
+
+At the bank, we needed high precision (fewer false fraud alerts) + high recall (catch actual fraud). Accuracy alone would've failed.
+
+Choose metrics that align with business reality.
+
+#MachineLearning #ModelEvaluation #DataScience`,
+      handshake: `Model Evaluation Beyond Accuracy 📈
+
+Building fraud detection at the bank taught me: accuracy is a trap.
+
+With imbalanced data (95% legitimate, 5% fraud):
+• Accuracy alone = misleading metric
+• Need: Precision (minimize false alerts) + Recall (catch actual fraud)
+• Threshold tuning: ROC-AUC tells the real story
+
+Lesson: Choose metrics aligned with business goals, not mathematical perfection.
+
+This applies to healthcare, e-commerce, fintech — anywhere real-world decisions matter.
+
+Seeking: Data Science roles where metrics drive business value`,
+      focus: "Practical ML wisdom"
+    },
+    {
+      day: "Thursday (Week 2)",
+      theme: "Cloud & Scalability",
+      title: "From Laptop to Cloud",
+      linkedin: `Starting with AWS S3 for data storage instead of local CSVs changed everything.
+
+Benefits:
+• Scalable (10MB → 10GB → 1TB seamlessly)
+• Reproducible (versioned, auditable data)
+• Shareable (team access without USB sticks)
+• Secure (encryption, access controls)
+
+Modern data science requires cloud thinking. S3 is day one.
+
+#AWS #CloudComputing #DataEngineering`,
+      handshake: `Scaling Data Science: Local → Cloud ☁️
+
+Moved from local CSV files to AWS S3. Game changer.
+
+Why S3 matters:
+✓ Scalability: 10MB → 10TB seamlessly
+✓ Reproducibility: Versioned, auditable data
+✓ Collaboration: Team access without USB drives
+✓ Security: Encryption, granular access controls
+
+The shift: Thinking about data as cloud-native assets, not laptop files.
+
+This is now standard for any data science role.
+
+Skills: AWS S3, cloud data architecture, pipeline design`,
+      focus: "Essential infrastructure mindset"
+    },
+    {
+      day: "Friday (Week 2)",
+      theme: "Storytelling",
+      title: "Data Science = Communication",
+      linkedin: `Built a model with 92% accuracy. Presented it to leadership. They didn't care.
+
+Then I reframed: "This model prevents $2M in annual fraud losses with 20% fewer false alerts."
+
+Suddenly: green light.
+
+Technical excellence without communication = wasted effort. Learn to translate metrics into business impact.
+
+#DataScience #Communication #Analytics`,
+      handshake: `Data Science is 50% Communication 💬
+
+Here's what I learned the hard way:
+
+Built a model: 92% accuracy ❌ (leadership didn't care)
+Reframed it: "$2M annual fraud prevention + 20% fewer false alerts" ✅ (green light approved)
+
+The gap: Technical excellence ≠ business value. You must translate metrics into outcomes.
+
+This matters in every role: fraud detection, healthcare, marketing, risk management.
+
+Skill to master: Data storytelling + business communication
+
+Seeking: Roles where I can drive both technical + business impact`,
+      focus: "Soft skills + business acumen"
+    },
+    {
+      day: "Saturday (Week 2)",
+      theme: "Tool Deep Dive",
+      title: "Why Docker Matters",
+      linkedin: `"Works on my machine" → Docker → "Works everywhere."
+
+Shipped a FastAPI + Streamlit app with docker-compose. Same dependencies, same environment, dev → prod. Zero surprises.
+
+If you're not containerizing your ML projects, you're limiting your impact.
+
+Docker is non-negotiable for modern ML engineering.
+
+#Docker #MLOps #DevOps`,
+      handshake: `Docker: From "Works on My Machine" to Production 🐳
+
+The breakthrough moment: containerizing ML applications with Docker.
+
+Before Docker:
+❌ Dependencies conflicts
+❌ Environment mismatches
+❌ "Works locally, breaks in prod"
+
+After Docker:
+✅ Consistent environment (dev → staging → prod)
+✅ Reproducibility
+✅ Easy team collaboration
+✅ Cloud deployment simplification
+
+Used: docker-compose for FastAPI + Streamlit + PostgreSQL setup.
+
+Essential skill for any modern ML engineer.
+
+Seeking: MLOps / ML Engineering internships`,
+      focus: "Essential modern skill"
+    },
+    {
+      day: "Sunday (Week 2)",
+      theme: "Industry Trends",
+      title: "The Future of ML Engineering",
+      linkedin: `2025 trends I'm watching:
+
+1. LLMOps (prompt engineering + evaluation frameworks)
+2. Multi-modal AI (text + images + audio)
+3. Edge ML (models on devices, not just cloud)
+4. Explainability (SHAP, LIME mandatory in regulated industries)
+
+Staying current = competitive advantage. What are you learning?
+
+Looking for internships where I can grow with these technologies. Let's connect.
+
+#AI #MachineLearning #FutureOfML`,
+      handshake: `2025 ML Trends Shaping the Industry 🚀
+
+What's trending in AI/ML right now:
+
+1. LLMOps: Production systems for foundation models + prompt optimization
+2. Multi-modal AI: Text + vision + audio in single models
+3. Edge ML: Running models on-device (privacy + speed)
+4. Explainability: SHAP/LIME mandatory in regulated industries (healthcare, finance)
+
+Personal focus: Building on these trends, currently learning LLMOps + multi-modal architectures.
+
+Looking to grow with a team that's on the cutting edge.
+
+Seeking: Data Science / ML Engineering internships Summer 2025
+Contact: wasiqcyber@gmail.com | linkedin.com/in/wasiqbakhsh`
+    }
+  ];
+
+  const post = postThemes[currentDay % postThemes.length];
+  const currentText = activePlatform === 'linkedin' ? post.linkedin : post.handshake;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(currentText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const nextPost = () => {
+    setCurrentDay((prev) => prev + 1);
+  };
+
+  const prevPost = () => {
+    setCurrentDay((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-6">
+      <div className="max-w-3xl mx-auto">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Sparkles className="w-8 h-8 text-blue-400" />
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+              LinkedIn + Handshake
+            </h1>
+            <Sparkles className="w-8 h-8 text-cyan-300" />
+          </div>
+          <p className="text-slate-400 text-lg">AI • ML • LLMs • Data Science Internship 2025</p>
+        </div>
+
+        {/* Platform Selector */}
+        <div className="flex gap-4 mb-8 justify-center">
+          <button
+            onClick={() => setActivePlatform('linkedin')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+              activePlatform === 'linkedin'
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg'
+                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+            }`}
+          >
+            <Linkedin className="w-5 h-5" />
+            LinkedIn
+          </button>
+          <button
+            onClick={() => setActivePlatform('handshake')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+              activePlatform === 'handshake'
+                ? 'bg-gradient-to-r from-green-600 to-emerald-500 text-white shadow-lg'
+                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+            }`}
+          >
+            <UserPlus className="w-5 h-5" />
+            Handshake
+          </button>
+        </div>
+
+        {/* Post Card */}
+        <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 mb-8 shadow-2xl">
+          {/* Meta */}
+          <div className="flex items-center justify-between mb-6 pb-6 border-b border-slate-700">
+            <div>
+              <div className="text-sm text-cyan-400 font-semibold tracking-wide mb-1">{post.day}</div>
+              <h2 className="text-2xl font-bold text-white">{post.theme}</h2>
+              <p className="text-slate-400 text-sm mt-1">{post.focus}</p>
+            </div>
+            <div className="text-right">
+              <div className="text-4xl font-bold text-slate-600">{String(currentDay + 1).padStart(2, '0')}</div>
+              <div className="text-xs text-slate-500">POST</div>
+            </div>
+          </div>
+
+          {/* Post Title */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold text-white mb-4">{post.title}</h3>
+            <p className={`text-xs font-semibold mb-4 ${activePlatform === 'linkedin' ? 'text-blue-400' : 'text-green-400'}`}>
+              {activePlatform === 'linkedin' ? '📱 LINKEDIN VERSION' : '🤝 HANDSHAKE VERSION'}
+            </p>
+          </div>
+
+          {/* Post Content */}
+          <div className="mb-6">
+            <div className="text-slate-200 leading-relaxed whitespace-pre-wrap text-base bg-slate-900/50 p-6 rounded-lg border border-slate-700">
+              {currentText}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <button
+              onClick={copyToClipboard}
+              className={`flex-1 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl ${
+                activePlatform === 'linkedin'
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600'
+                  : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600'
+              }`}
+            >
+              <Copy className="w-5 h-5" />
+              {copied ? 'Copied!' : 'Copy Post'}
+            </button>
+            <a
+              href={activePlatform === 'linkedin' ? 'https://www.linkedin.com' : 'https://www.handshake.com'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              Post on {activePlatform === 'linkedin' ? 'LinkedIn' : 'Handshake'}
+              <ChevronRight className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={prevPost}
+            disabled={currentDay === 0}
+            className="px-6 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+          >
+            ← Previous
+          </button>
+          
+          <div className="text-center">
+            <div className="text-slate-400 text-sm">Week {Math.floor(currentDay / 7) + 1}</div>
+            <div className="text-slate-300 font-semibold">{postThemes.length} posts queued</div>
+          </div>
+
+          <button
+            onClick={nextPost}
+            className={`px-6 py-2 text-white rounded-lg transition-all ${
+              activePlatform === 'linkedin'
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600'
+                : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600'
+            }`}
+          >
+            Next →
+          </button>
+        </div>
+
+        {/* Info Box */}
+        <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-slate-300 text-sm space-y-3">
+          <p className="font-semibold text-cyan-400">💡 How it works:</p>
+          <ul className="space-y-2 ml-4">
+            <li>✓ Choose platform (LinkedIn or Handshake)</li>
+            <li>✓ Read the post (optimized for that platform)</li>
+            <li>✓ Click "Copy Post" to copy to clipboard</li>
+            <li>✓ Paste on the platform and review/edit if needed</li>
+            <li>✓ Post! (You control what goes live)</li>
+            <li>✓ Next day = new authentic post ready</li>
+          </ul>
+          <p className="text-xs text-slate-500 mt-4">🎯 <strong>14 posts queued</strong> (2 weeks). Both platforms covered. Target: Data Science/ML Engineering internships at fintech, healthcare, SaaS.</p>
+          <p className="text-xs text-slate-500">💼 Each post is unique per platform - LinkedIn is longer/narrative, Handshake is structured/action-oriented.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
