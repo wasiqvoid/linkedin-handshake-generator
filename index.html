@@ -3,967 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn + Handshake Post Generator | Wasiq Bakhsh</title>
+    <title>30-Day Post Generator | Wasiq Bakhsh</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
-        }
-    </style>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState } = React;
 
         function PostGenerator() {
-            const allPostThemes = [
-                // Data Engineering & Infrastructure
-                {
-                    day: "Data Engineering",
-                    theme: "ETL & Pipelines",
-                    title: "Building Scalable Data Pipelines",
-                    linkedin: `Built reproducible ETL pipelines handling 1M+ transactions across SQL + AWS S3.
-
-Stack: Python/Pandas (transformation) + SQL (schema validation) + AWS S3 (scalable storage).
-
-The payoff? Data moved from chaotic CSVs to structured, versioned, scalable infrastructure.
-
-If you're manually moving data around, it's time to build pipelines.
-
-#DataEngineering #ETL #AWS`,
-                    handshake: `Building ETL Pipelines for 1M+ Transactions 🔄
-
-Designed reproducible data pipelines handling massive transaction volumes.
-
-Architecture:
-• Data ingestion: Python/Pandas transformations
-• Validation: SQL schema checks + type casting
-• Storage: AWS S3 (scalable, versioned, secure)
-• Reliability: Automated monitoring + error handling
-
-Before: Manual CSV shuffling
-After: Production ETL infrastructure
-
-Seeking: Data Engineering / ML Engineering internships`,
-                    category: "Data Engineering"
-                },
-                {
-                    day: "Data Quality",
-                    theme: "Data Validation & Quality",
-                    title: "Ensuring Data Quality at Scale",
-                    linkedin: `Data quality improvements compound. Spent today implementing validation frameworks that reduced data errors by 20%.
-
-Schema validation + deduplication + null handling = clean pipelines. This unglamorous work is what separates professional systems from hobby projects.
-
-Garbage in → garbage out. Always invest in data quality first.
-
-#DataEngineering #DataQuality #DataScience`,
-                    handshake: `Data Quality Framework Implementation 📊
-
-Improved data accuracy by 20% through:
-• Schema validation (type checking, constraints)
-• Deduplication (removing duplicate records)
-• Null value handling (strategic imputation)
-• Outlier detection (IQR-based flagging)
-
-Result: Clean, reliable data for downstream models
-
-Seeking: Data Engineering / Data Science internships
-Skills: Data validation, pipeline design, SQL`,
-                    category: "Data Engineering"
-                },
-                {
-                    day: "Cloud Architecture",
-                    theme: "From Laptop to Cloud",
-                    title: "Scaling Data Systems: Local → Cloud",
-                    linkedin: `Starting with AWS S3 for data storage instead of local CSVs changed everything.
-
-Benefits:
-• Scalable (10MB → 10GB → 1TB seamlessly)
-• Reproducible (versioned, auditable data)
-• Shareable (team access without USB sticks)
-• Secure (encryption, access controls)
-
-Modern data science requires cloud thinking. S3 is day one.
-
-#AWS #CloudComputing #DataEngineering`,
-                    handshake: `Scaling Data Science: Local → Cloud ☁️
-
-Moved from local CSV files to AWS S3. Game changer.
-
-Why S3 matters:
-✓ Scalability: 10MB → 10TB seamlessly
-✓ Reproducibility: Versioned, auditable data
-✓ Collaboration: Team access without USB drives
-✓ Security: Encryption, granular access controls
-
-The shift: Thinking about data as cloud-native assets.
-
-Seeking: Cloud Data / ML Engineering internships
-Skills: AWS, data architecture, pipeline design`,
-                    category: "Data Engineering"
-                },
-
-                // Machine Learning & Model Development
-                {
-                    day: "Feature Engineering",
-                    theme: "The Art of Feature Engineering",
-                    title: "Features > Models",
-                    linkedin: `Spent today engineering features from 1M+ bank transactions:
-• Merchant risk scores (categorical embeddings)
-• Transaction velocity (sliding window aggregations)
-• Amount deviations (z-score based anomalies)
-
-Raw data → meaningful features → better models. This is where 80% of ML work lives.
-
-Your model is only as good as your features. Garbage in = garbage out.
-
-#FeatureEngineering #MachineLearning #DataScience`,
-                    handshake: `Feature Engineering at Scale: 1M+ Transactions 📊
-
-Building production ML means mastering feature engineering.
-
-Features Created:
-✓ Merchant risk scores (categorical embeddings)
-✓ Transaction velocity flags (sliding windows)
-✓ Amount deviation anomalies (z-score normalization)
-
-Reality: 80% time on features, 20% on model selection.
-
-Seeking: ML / Data Science internships
-Skills: Feature engineering, SQL, Python, statistical analysis`,
-                    category: "Machine Learning"
-                },
-                {
-                    day: "Model Evaluation",
-                    theme: "Metrics That Matter",
-                    title: "Why Accuracy Lies",
-                    linkedin: `Training your model? Don't stop at accuracy.
-
-Precision, Recall, F1-Score, ROC-AUC. When you have imbalanced data (95% negative, 5% positive), accuracy is meaningless.
-
-At the bank, we needed high precision (fewer false alerts) + high recall (catch actual fraud). Accuracy alone would've failed.
-
-Choose metrics that align with business reality.
-
-#MachineLearning #ModelEvaluation #DataScience`,
-                    handshake: `Model Evaluation Beyond Accuracy 📈
-
-Accuracy is a trap with imbalanced data.
-
-With 95% legitimate, 5% fraud:
-• Accuracy alone = misleading metric
-• Need: Precision (minimize false alerts) + Recall (catch fraud)
-• Threshold tuning: ROC-AUC tells the real story
-
-Lesson: Choose metrics aligned with business goals.
-
-This applies to healthcare, fintech, e-commerce — anywhere decisions matter.
-
-Seeking: Data Science roles with business impact`,
-                    category: "Machine Learning"
-                },
-                {
-                    day: "Hyperparameter Tuning",
-                    theme: "Optimizing ML Models",
-                    title: "GridSearchCV & Optuna",
-                    linkedin: `Hyperparameter tuning is where models transform from decent to production-ready.
-
-Used GridSearchCV to benchmark 6 classifiers with different parameters. Achieved 78% accuracy on high-dimensional EEG data.
-
-The lesson? Systematic search > manual tweaking. Use Optuna or GridSearchCV. Always.
-
-#MachineLearning #HyperparameterTuning #DataScience`,
-                    handshake: `Hyperparameter Optimization with GridSearchCV 🎯
-
-Tuned 6 classifiers on high-dimensional EEG data (178 features).
-
-Process:
-• Define parameter grid (learning rates, depth, regularization)
-• GridSearchCV tests all combinations
-• Cross-validation prevents overfitting
-• Result: 78% accuracy on test sets
-
-Key insight: Systematic tuning > random guessing.
-
-Seeking: ML Engineering / Data Science internships
-Skills: Python, Scikit-learn, Cross-validation`,
-                    category: "Machine Learning"
-                },
-                {
-                    day: "Class Imbalance",
-                    theme: "Handling Imbalanced Data",
-                    title: "SMOTE & Threshold Tuning",
-                    linkedin: `Class imbalance is the elephant in every ML room.
-
-95% negative, 5% positive → your model learns to predict "negative" always and gets 95% accuracy (useless).
-
-Solution: SMOTE (oversample minority) + threshold tuning (adjust decision boundary). Suddenly your model actually detects the 5%.
-
-This applies to fraud, healthcare, rare events. Learn it.
-
-#MachineLearning #ClassImbalance #SMOTE`,
-                    handshake: `Handling Class Imbalance: SMOTE Strategy 🔄
-
-95% legitimate transactions, 5% fraud. Standard model fails.
-
-Solution:
-• SMOTE: Oversample minority class (5% → balanced)
-• Cross-validation: Prevent data leakage
-• Threshold tuning: Adjust decision boundary
-• Metrics: Precision + Recall (not accuracy)
-
-Result: Model that actually catches fraud (20% false positive reduction).
-
-Seeking: ML Engineering / Data Science internships
-Skills: SMOTE, Python, Scikit-learn, imbalanced-learn`,
-                    category: "Machine Learning"
-                },
-                {
-                    day: "Model Interpretability",
-                    theme: "Understanding Predictions",
-                    title: "SHAP & Feature Importance",
-                    linkedin: `Black boxes lose trust. SHAP changes that.
-
-Built models and applied SHAP to answer: "Why did this model predict X?"
-
-SHAP shows which features matter + how much each contributes. Interpretability > accuracy alone.
-
-In regulated industries (healthcare, finance), SHAP isn't optional.
-
-#SHAP #ModelInterpretability #Explainability`,
-                    handshake: `SHAP Explainability for Model Trust 🔍
-
-Black boxes don't survive in healthcare or finance.
-
-SHAP answers: "Why did your model predict X?"
-
-Applied SHAP across:
-• Logistic Regression (feature weights)
-• Random Forest (feature importance)
-• XGBoost (interaction effects)
-• LSTM (temporal patterns)
-
-Result: Interpretable, trustworthy predictions
-
-Seeking: ML Engineering roles requiring explainability
-Skills: SHAP, LIME, Python, Model interpretation`,
-                    category: "Machine Learning"
-                },
-
-                // NLP & AI
-                {
-                    day: "NLP",
-                    theme: "Natural Language Processing",
-                    title: "Financial Sentiment → Stock Predictions",
-                    linkedin: `Building an NLP pipeline: 600K+ financial news headlines → 7,000+ stock tickers → sentiment features → stock movement predictions.
-
-Tech stack: FinBERT (Hugging Face Transformers) for sentiment + temporal feature engineering + XGBoost/LSTM for predictions.
-
-Plus SHAP explainability to answer: "Why is sentiment a strong predictor?"
-
-Applying NLP to finance = linguistics + quantitative analysis. Fascinating.
-
-#NLP #FinancialML #Transformers`,
-                    handshake: `Financial Sentiment Analysis at Scale 📈
-
-NLP pipeline: 600K+ headlines → sentiment → stock prediction
-
-Architecture:
-→ 600K+ financial news headlines
-→ 7,000+ stock tickers  
-→ Sentiment extraction (FinBERT)
-→ Stock movement predictions (XGBoost + LSTM)
-
-Technology: Hugging Face Transformers, temporal features, SHAP
-
-Seeking: NLP / ML Engineering roles in fintech
-Skills: NLP, Transformers, Time Series, Feature Engineering`,
-                    category: "NLP & AI"
-                },
-                {
-                    day: "LLMs & Generative AI",
-                    theme: "Building with LLMs",
-                    title: "AI-Powered SQL Assistant in Production",
-                    linkedin: `Shipped an AI-powered SQL query assistant: natural language → SQL queries in production.
-
-Stack: OpenAI GPT + LLaMA + Streamlit + PostgreSQL. Non-technical users can now query databases without touching SQL.
-
-The hard part wasn't the LLM integration — it was prompt engineering, input validation, and edge cases. LLMOps > raw model training.
-
-Live demo: wasiq-aisql.streamlit.app
-
-#LLM #GenerativeAI #MLOps`,
-                    handshake: `AI-Powered SQL Query Assistant 🚀
-
-Built a generative AI app converting natural language → SQL queries.
-
-Tech Stack:
-• LLMs: OpenAI GPT + LLaMA
-• Frontend: Streamlit (Python)
-• Backend: PostgreSQL database
-• Deployment: Full-stack production system
-
-What I learned: Prompt engineering + validation = harder than LLM integration.
-
-Live demo: wasiq-aisql.streamlit.app
-
-Seeking: ML Engineering / LLMOps internships
-Skills: LLMs, Prompt Engineering, Full-stack deployment`,
-                    category: "NLP & AI"
-                },
-                {
-                    day: "Prompt Engineering",
-                    theme: "LLMOps & Prompt Optimization",
-                    title: "Prompt Engineering for Production",
-                    linkedin: `Prompt engineering is its own discipline now.
-
-Spent today optimizing prompts for SQL generation. Tested 10+ versions:
-• Few-shot examples (improve accuracy 15%)
-• System roles (clarify context)
-• Error handling (graceful fallbacks)
-• Output formatting (structured JSON)
-
-Bad prompt = garbage. Good prompt = reliable production system.
-
-LLMOps is the frontier.
-
-#LLMOps #PromptEngineering #GenerativeAI`,
-                    handshake: `Mastering Prompt Engineering 🎯
-
-Prompt quality = LLM output quality.
-
-Optimization techniques:
-• Few-shot examples (teach by example)
-• System roles (give AI context)
-• Structured output (enforce JSON format)
-• Error handling (handle edge cases)
-• Versioning (track prompt changes)
-
-Result: Reliable production LLM systems.
-
-Seeking: LLMOps / AI Engineering internships
-Skills: Prompt engineering, LLMs, OpenAI API, Hugging Face`,
-                    category: "NLP & AI"
-                },
-                {
-                    day: "Multi-modal AI",
-                    theme: "Beyond Text",
-                    title: "Text + Vision + Audio",
-                    linkedin: `2025 trend: Multi-modal AI.
-
-Single models handling text + images + audio. Not three separate pipelines.
-
-Currently exploring: Vision Transformers + audio embeddings + text encoders combined for unified representations.
-
-This is the future. Single foundation model > multiple specialized models.
-
-What are you building with multi-modal?
-
-#MultimodalAI #FoundationModels #DeepLearning`,
-                    handshake: `Multi-modal AI: The Future is Here 🚀
-
-Beyond text-only LLMs:
-
-Exploring multi-modal architectures:
-• Vision Transformers (images)
-• Audio embeddings (speech)
-• Text encoders (language)
-• Unified representations (combined)
-
-Benefit: Single model handles diverse inputs.
-
-Current focus: Building multi-modal systems for real-world applications.
-
-Seeking: AI Engineering / Research internships
-Skills: Vision Transformers, Audio processing, Foundation Models`,
-                    category: "NLP & AI"
-                },
-                {
-                    day: "RAG Systems",
-                    theme: "Retrieval-Augmented Generation",
-                    title: "Building RAG Pipelines",
-                    linkedin: `RAG (Retrieval-Augmented Generation) is how you avoid LLM hallucinations.
-
-Instead of asking GPT "What's in my database?", you:
-1. Retrieve relevant documents
-2. Pass them to LLM
-3. LLM answers based on real data
-
-Result: Accurate, grounded answers.
-
-RAG = Production LLM systems. Learn it.
-
-#RAG #LLMs #GenerativeAI`,
-                    handshake: `RAG: Making LLMs Grounded & Accurate 📖
-
-Hallucinations are LLM's biggest problem. RAG solves it.
-
-Architecture:
-• Vector database (store document embeddings)
-• Retriever (find relevant documents)
-• LLM (generate based on retrieved context)
-• Pipeline (orchestrate the flow)
-
-Result: LLM answers backed by real data.
-
-Seeking: AI Engineering / LLMOps internships
-Skills: Vector databases, embeddings, LLMs, RAG pipelines`,
-                    category: "NLP & AI"
-                },
-
-                // Analytics & Insights
-                {
-                    day: "Data Visualization",
-                    theme: "Storytelling with Data",
-                    title: "Tableau & Power BI Dashboards",
-                    linkedin: `Data science is 50% communication.
-
-Built Tableau dashboards tracking student retention, engagement, and service KPIs. Raw metrics → visual stories → actionable insights.
-
-A good dashboard makes the answer obvious. Viewers shouldn't need 10 minutes to understand.
-
-Design for clarity. Always.
-
-#DataVisualization #Tableau #Analytics`,
-                    handshake: `Data Visualization: Telling Stories with Data 📊
-
-Analytics → dashboards → decisions.
-
-Built dashboards tracking:
-• Student retention rates (trends)
-• Engagement metrics (KPIs)
-• Service performance (benchmarks)
-• Cohort analysis (segmentation)
-
-Principle: Make the answer obvious at a glance.
-
-Seeking: Data Analytics / BI internships
-Skills: Tableau, Power BI, dashboard design, storytelling`,
-                    category: "Analytics"
-                },
-                {
-                    day: "Statistical Analysis",
-                    theme: "Hypothesis Testing",
-                    title: "A/B Testing & Statistical Significance",
-                    linkedin: `A/B testing separates data-driven decisions from guesses.
-
-Designed lift analysis frameworks testing marketing channels. P-value, confidence intervals, effect size → "Is this result real or noise?"
-
-Most companies run A/B tests without understanding statistics. Don't be that person.
-
-Learn hypothesis testing. Seriously.
-
-#Statistics #ABTesting #DataScience`,
-                    handshake: `A/B Testing & Statistical Rigor 🧪
-
-Decisions without statistics = guessing.
-
-A/B testing framework includes:
-• Null hypothesis (no difference)
-• Sample size calculation (power analysis)
-• Test selection (t-test, chi-square)
-• P-value interpretation (5% threshold)
-• Confidence intervals (effect size)
-
-Result: Data-driven decisions.
-
-Seeking: Analytics / Data Science internships
-Skills: Statistical testing, Python, Hypothesis testing`,
-                    category: "Analytics"
-                },
-                {
-                    day: "Business Analytics",
-                    theme: "Data → Business Impact",
-                    title: "Translating Metrics to Business Value",
-                    linkedin: `Built a model with 92% accuracy. Presented it to leadership. They didn't care.
-
-Reframed: "This prevents $2M in annual fraud losses with 20% fewer false alerts."
-
-Suddenly: green light.
-
-Technical excellence without communication = wasted effort. Learn to translate metrics into business impact.
-
-#DataScience #Analytics #Communication`,
-                    handshake: `Data Science is 50% Communication 💬
-
-Technical skill ≠ business impact.
-
-Lesson learned:
-92% accuracy ❌ (leadership didn't care)
-"$2M prevention + fewer alerts" ✅ (approved)
-
-The gap: Metrics ≠ outcomes. You must translate.
-
-This applies to fraud, healthcare, marketing, every domain.
-
-Skill to master: Data storytelling + business translation
-
-Seeking: Data Science roles with business impact`,
-                    category: "Analytics"
-                },
-
-                // Deep Learning & Advanced Topics
-                {
-                    day: "Deep Learning",
-                    theme: "Neural Networks",
-                    title: "TensorFlow & PyTorch",
-                    linkedin: `Deep learning isn't magic, it's matrix multiplication at scale.
-
-Trained LSTM models on high-dimensional EEG data. RNN architectures for sequence prediction. Achieved 90%+ accuracy on clinical test sets.
-
-The hard part? Knowing when to use LSTM vs CNN vs Transformer. The why > the how.
-
-#DeepLearning #TensorFlow #PyTorch`,
-                    handshake: `Deep Learning: Beyond the Hype 🧠
-
-Neural networks = composition of linear transformations.
-
-Applied deep learning to:
-• EEG data (LSTM for sequences)
-• Patient records (Dense networks)
-• Time series (Temporal CNN)
-• Healthcare prediction (90%+ accuracy)
-
-Key insight: Architecture matters. LSTM vs CNN vs Transformer depends on problem.
-
-Seeking: Deep Learning / ML Engineering internships
-Skills: TensorFlow, PyTorch, LSTM, CNN, architecture design`,
-                    category: "Deep Learning"
-                },
-                {
-                    day: "Time Series",
-                    theme: "Temporal Patterns",
-                    title: "Forecasting & Trend Analysis",
-                    linkedin: `Time series forecasting is everywhere: stock prices, traffic, patient readmission.
-
-Built models predicting Bitcoin price movements using LSTM + rolling averages + momentum signals.
-
-The lesson? Stationarity matters. Seasonal decomposition matters. These fundamentals > fancy algorithms.
-
-#TimeSeries #LSTM #Forecasting`,
-                    handshake: `Time Series Forecasting 📈
-
-From stock prices to patient readmission — temporal patterns matter.
-
-Techniques learned:
-• Stationarity (transform non-stationary data)
-• Seasonal decomposition (trend + seasonality + residual)
-• ARIMA models (statistical forecasting)
-• LSTM networks (deep learning approach)
-• Evaluation (RMSE, MAE, directional accuracy)
-
-Currently forecasting: Stock prices, patient readmission trends.
-
-Seeking: Time Series / ML Engineering internships
-Skills: ARIMA, LSTM, statsmodels, temporal analysis`,
-                    category: "Deep Learning"
-                },
-                {
-                    day: "Computer Vision",
-                    theme: "Vision Transformers",
-                    title: "Image Classification & Detection",
-                    linkedin: `Computer vision moved from CNNs to Transformers.
-
-Vision Transformers (ViT) treat images as sequences of patches. Outperform ResNet on large datasets.
-
-Currently learning multi-modal vision + text. Single model understanding images and text = frontier.
-
-Where are you applying vision?
-
-#ComputerVision #Transformers #DeepLearning`,
-                    handshake: `Vision Transformers: The New Standard 👁️
-
-CNN era → Transformer era.
-
-Vision Transformers (ViT):
-• Treat images as patch sequences
-• Self-attention across spatial regions
-• Outperform ResNet (especially at scale)
-• Integrate with text (multi-modal)
-
-Current focus: Image-text alignment, multi-modal understanding.
-
-Seeking: Computer Vision / AI Engineering internships
-Skills: Vision Transformers, image processing, PyTorch`,
-                    category: "Deep Learning"
-                },
-
-                // DevOps & MLOps
-                {
-                    day: "MLOps",
-                    theme: "ML in Production",
-                    title: "End-to-End ML Deployment",
-                    linkedin: `Just shipped a complete ML pipeline: data ingestion → preprocessing → 16 experiments → model selection → production deployment.
-
-Full stack: FastAPI (backend) + Streamlit (frontend) + Docker + MLflow + Render.
-
-The lesson? Building the model = 30%. Deploying reliably = 70%.
-
-If you're only writing notebooks, you're not building products.
-
-#MLOps #Docker #FastAPI`,
-                    handshake: `Complete ML Pipeline: Lab to Production 🚀
-
-End-to-end ML system architecture:
-
-Pipeline: Ingestion → Preprocessing → 16 Experiments → Selection → Deployment
-
-Tech Stack:
-• Backend: FastAPI with REST endpoints
-• Frontend: Streamlit UI
-• Infrastructure: Docker + docker-compose
-• Experiment Tracking: MLflow + DagsHub
-• Hosting: Render cloud platform
-
-Key learning: Model = 30%, deployment = 70%.
-
-Seeking: MLOps / ML Engineering internships`,
-                    category: "MLOps"
-                },
-                {
-                    day: "Docker & Containerization",
-                    theme: "DevOps Fundamentals",
-                    title: "Why Docker Matters",
-                    linkedin: `"Works on my machine" → Docker → "Works everywhere."
-
-Shipped a FastAPI + Streamlit app with docker-compose. Same dependencies, same environment, dev → prod. Zero surprises.
-
-If you're not containerizing ML projects, you're limiting your impact.
-
-Docker is non-negotiable for modern ML engineering.
-
-#Docker #MLOps #DevOps`,
-                    handshake: `Docker: From "Works on My Machine" to Production 🐳
-
-The breakthrough: Containerization solves environment problems.
-
-Before Docker:
-❌ Dependencies conflicts
-❌ Environment mismatches
-❌ "Works locally, breaks in prod"
-
-After Docker:
-✅ Consistent environment (dev → staging → prod)
-✅ Reproducibility
-✅ Team collaboration
-✅ Cloud deployment
-
-Used: docker-compose for FastAPI + Streamlit + PostgreSQL.
-
-Seeking: MLOps / ML Engineering internships`,
-                    category: "MLOps"
-                },
-                {
-                    day: "Experiment Tracking",
-                    theme: "MLflow & Reproducibility",
-                    title: "MLflow: Tracking ML Experiments",
-                    linkedin: `Tracked 16 classification models in MLflow: hyperparameters, metrics, artifacts, everything.
-
-Compared them side-by-side. Selected best by F1-score. Without MLflow, I'd be scrolling through notebooks wondering which model was which.
-
-Reproducibility = non-negotiable. MLflow is the standard.
-
-#MLOps #MLflow #MachineLearning`,
-                    handshake: `MLflow: Reproducible ML Experiments 📊
-
-Tracking 16 models manually = chaos. MLflow = sanity.
-
-Features used:
-• Experiment logging (parameters, metrics)
-• Artifact storage (models, plots)
-• Model registry (versioning)
-• Comparison (side-by-side analysis)
-• Deployment integration (model serving)
-
-Result: Reproducible, auditable ML experiments.
-
-Seeking: MLOps / ML Engineering internships
-Skills: MLflow, experiment tracking, model versioning`,
-                    category: "MLOps"
-                },
-
-                // Current Learning & Career
-                {
-                    day: "Current Learning",
-                    theme: "Statistical Learning",
-                    title: "Coursework Deep Dive",
-                    linkedin: `Currently taking Statistical Learning, Data Modeling, and Query Language this semester.
-
-Deep dive into clustering analysis: k-means, hierarchical clustering, silhouette analysis. Raw clustering = 20%. Feature engineering + interpretation = 80%.
-
-This is what production ML looks like.
-
-#DataScience #StatisticalLearning #MachineLearning`,
-                    handshake: `Statistical Learning Semester 📚
-
-Currently enrolled in courses covering:
-• Statistical Learning (regression, classification)
-• Data Modeling (schema design, normalization)
-• Query Language (SQL, advanced operations)
-• Clustering analysis (k-means, hierarchical)
-
-Key insight: Theory + practice. Academic rigor + production constraints.
-
-Looking for internships combining both.`,
-                    category: "Career"
-                },
-                {
-                    day: "Industry Trends",
-                    theme: "The Future of ML",
-                    title: "2025 ML Trends",
-                    linkedin: `2025 trends I'm watching:
-
-1. LLMOps (prompt engineering + evaluation)
-2. Multi-modal AI (text + images + audio)
-3. Edge ML (models on devices)
-4. Explainability (SHAP mandatory in regulated industries)
-
-Staying current = competitive advantage.
-
-Looking for internships where I can grow with these technologies.
-
-#AI #MachineLearning #FutureOfML`,
-                    handshake: `2025 ML Trends Shaping the Industry 🚀
-
-What's trending in AI/ML:
-
-1. LLMOps: Production systems for foundation models
-2. Multi-modal AI: Text + vision + audio unified
-3. Edge ML: On-device inference (privacy + speed)
-4. Explainability: SHAP/LIME mandatory in healthcare/finance
-
-Personal focus: Building on these trends.
-
-Seeking: Data Science / ML Engineering internships Summer 2025`,
-                    category: "Career"
-                }
+            const allPosts = [
+                { linkedin: "Built reproducible ETL pipelines handling 1M+ transactions across SQL + AWS S3.\n\nStack: Python/Pandas + SQL schema validation + AWS S3 storage.\n\nData moved from chaotic CSVs to structured, versioned, scalable infrastructure.\n\nIf you're manually moving data around, it's time to build pipelines.\n\n#DataEngineering #ETL #AWS", handshake: "Building ETL Pipelines for 1M+ Transactions 🔄\n\nDesigned reproducible data pipelines handling massive transaction volumes.\n\nArchitecture:\n• Data ingestion: Python/Pandas transformations\n• Validation: SQL schema checks\n• Storage: AWS S3 (scalable, secure)\n\nBefore: Manual CSV shuffling\nAfter: Production infrastructure\n\nSeeking: Data Engineering internships", category: "Data Engineering" },
+                { linkedin: "Data quality improvements compound. Implemented validation frameworks that reduced errors by 20%.\n\nSchema validation + deduplication + null handling = clean pipelines. This unglamorous work separates professional systems from hobby projects.\n\nGarbage in → garbage out. Invest in data quality first.\n\n#DataEngineering #DataQuality", handshake: "Data Quality Framework 📊\n\nImproved data accuracy by 20% through:\n• Schema validation (type checking)\n• Deduplication (removing duplicates)\n• Null handling (strategic imputation)\n• Outlier detection (IQR-based)\n\nClean data = reliable models.\n\nSeeking: Data Engineering internships\nSkills: Data validation, SQL, Python", category: "Data Engineering" },
+                { linkedin: "Starting with AWS S3 for data storage instead of local CSVs changed everything.\n\nBenefits:\n• Scalable (10MB → 10TB seamlessly)\n• Reproducible (versioned, auditable)\n• Shareable (team access)\n• Secure (encryption, access controls)\n\nModern data science requires cloud thinking. S3 is day one.\n\n#AWS #CloudComputing #DataEngineering", handshake: "Scaling Data Science: Local → Cloud ☁️\n\nMoved from local CSV files to AWS S3.\n\nWhy S3 matters:\n✓ Scalability: 10MB → 10TB seamlessly\n✓ Reproducibility: Versioned data\n✓ Collaboration: Team access\n✓ Security: Encryption + access controls\n\nStandard for any data science role.\n\nSeeking: Cloud Data / ML Engineering internships", category: "Data Engineering" },
+                { linkedin: "Database optimization matters more than people think. Optimized queries handling 1M+ records reduced execution time by 60%.\n\nIndexing + query planning + normalization = performance. Your database is as important as your algorithm.\n\nLearn SQL deeply. Seriously.\n\n#SQL #DataEngineering #Database", handshake: "Database Optimization at Scale 🗄️\n\nOptimized queries on 1M+ records.\n\nTechniques:\n• Proper indexing (B-tree optimization)\n• Query planning (explain analyze)\n• Denormalization (strategic tradeoffs)\n• Connection pooling (resource management)\n\nResult: 60% faster execution.\n\nSeeking: Data Engineering internships\nSkills: SQL, database design", category: "Data Engineering" },
+                { linkedin: "Data pipeline monitoring is your safety net. Built dashboards tracking ingestion rates, error rates, and data quality metrics.\n\nYou can't manage what you don't measure. Visibility = confidence. Confidence = production-ready systems.\n\n#DataEngineering #Monitoring #MLOps", handshake: "Data Pipeline Monitoring 📈\n\nBuilt real-time dashboards tracking:\n• Ingestion rates\n• Error rates\n• Data quality metrics\n• Performance benchmarks\n\nResult: Catch issues before they become problems.\n\nSeeking: Data Engineering / MLOps internships\nSkills: Monitoring, alerting, dashboards", category: "Data Engineering" },
+                { linkedin: "Feature engineering is where 80% of ML work lives. Engineered features from 1M+ transactions:\n• Merchant risk scores (categorical embeddings)\n• Transaction velocity (sliding windows)\n• Amount deviations (z-score anomalies)\n\nRaw data → meaningful features → better models.\n\n#FeatureEngineering #MachineLearning #DataScience", handshake: "Feature Engineering at Scale 📊\n\nEngineered features from 1M+ transactions:\n✓ Merchant risk scores (embeddings)\n✓ Transaction velocity (sliding windows)\n✓ Amount anomalies (z-score)\n\nReality: 80% time on features, 20% on models.\n\nSeeking: ML / Data Science internships\nSkills: Feature engineering, SQL, Python", category: "Machine Learning" },
+                { linkedin: "Training your model? Don't stop at accuracy.\n\nPrecision, Recall, F1-Score, ROC-AUC. When you have imbalanced data (95% negative, 5% positive), accuracy is meaningless.\n\nWe needed high precision (fewer false alerts) + high recall (catch fraud). Accuracy alone failed.\n\nChoose metrics aligned with business reality.\n\n#MachineLearning #ModelEvaluation", handshake: "Model Evaluation Beyond Accuracy 📈\n\nAccuracy is a trap with imbalanced data.\n\nWith 95% legitimate, 5% fraud:\n• Accuracy alone = misleading\n• Need: Precision + Recall\n• Threshold tuning: ROC-AUC\n\nChoose metrics aligned with business goals.\n\nSeeking: Data Science roles\nSkills: Model evaluation, statistical testing", category: "Machine Learning" },
+                { linkedin: "Hyperparameter tuning transforms models from decent to production-ready.\n\nUsed GridSearchCV to benchmark 6 classifiers. Tested learning rates, tree depth, regularization.\n\nSystematic search > manual tweaking. Use Optuna or GridSearchCV. Always.\n\n#MachineLearning #HyperparameterTuning #DataScience", handshake: "Hyperparameter Optimization 🎯\n\nTuned 6 classifiers on EEG data (178 features).\n\nProcess:\n• Define parameter grid\n• GridSearchCV tests combinations\n• Cross-validation prevents overfitting\n• Result: 78% accuracy\n\nSystematic tuning > random guessing.\n\nSeeking: ML Engineering internships\nSkills: GridSearchCV, Scikit-learn", category: "Machine Learning" },
+                { linkedin: "Class imbalance is the elephant in every ML room.\n\n95% negative, 5% positive → model learns to predict \"negative\" always and gets 95% accuracy (useless).\n\nSolution: SMOTE + threshold tuning. Suddenly your model detects the 5%.\n\nThis applies to fraud, healthcare, rare events.\n\n#MachineLearning #ClassImbalance #SMOTE", handshake: "Handling Class Imbalance: SMOTE 🔄\n\n95% legitimate, 5% fraud = standard model fails.\n\nSolution:\n• SMOTE: Oversample minority (5% → balanced)\n• Cross-validation: Prevent leakage\n• Threshold tuning: Adjust boundary\n• Metrics: Precision + Recall\n\nResult: 20% false positive reduction.\n\nSeeking: ML / Data Science internships\nSkills: SMOTE, Scikit-learn", category: "Machine Learning" },
+                { linkedin: "Black boxes lose trust. SHAP changes that.\n\nBuilt models and applied SHAP to answer: \"Why did this predict X?\"\n\nSHAP shows which features matter + how much each contributes. Interpretability > accuracy alone.\n\nIn regulated industries, SHAP isn't optional.\n\n#SHAP #ModelInterpretability #Explainability", handshake: "SHAP: Making Models Interpretable 🔍\n\nBlack boxes don't survive in healthcare/finance.\n\nApplied SHAP across:\n• Logistic Regression (feature weights)\n• Random Forest (importance)\n• XGBoost (interactions)\n• LSTM (temporal patterns)\n\nResult: Trustworthy, explainable predictions.\n\nSeeking: ML Engineering roles\nSkills: SHAP, LIME, model interpretation", category: "Machine Learning" },
+                { linkedin: "Cross-validation prevents overfitting (your model memorizing training data).\n\nImplemented k-fold cross-validation on fraud detection. Model performed consistently across all folds.\n\nDon't just train-test split. Use cross-validation. Your future self will thank you.\n\n#MachineLearning #CrossValidation #DataScience", handshake: "Cross-Validation Best Practices ✓\n\nUsed k-fold cross-validation to prevent overfitting.\n\nApproach:\n• Divide data into k folds\n• Train on k-1 folds, test on 1\n• Repeat k times\n• Average results\n\nResult: Reliable performance estimate.\n\nSeeking: ML / Data Science internships\nSkills: Cross-validation, model evaluation", category: "Machine Learning" },
+                { linkedin: "Regularization controls model complexity. L1 (Lasso) + L2 (Ridge) prevent overfitting.\n\nTrained models with different regularization strengths. Found the sweet spot between bias and variance.\n\nUnderfitting → Overfitting. Regularization finds the balance.\n\n#MachineLearning #Regularization #DataScience", handshake: "Regularization: Controlling Complexity ⚖️\n\nTrained models with L1 (Lasso) and L2 (Ridge).\n\nTechniques:\n• L1: Feature selection (sparse weights)\n• L2: Weight shrinkage (small penalties)\n• Elastic Net: Both combined\n\nResult: Models that generalize better.\n\nSeeking: ML Engineering internships\nSkills: Regularization, Scikit-learn", category: "Machine Learning" },
+                { linkedin: "Building an NLP pipeline: 600K+ financial news headlines → 7,000+ stocks → sentiment features → stock predictions.\n\nTech: FinBERT (Hugging Face) for sentiment + temporal features + XGBoost/LSTM.\n\nPlus SHAP explainability: \"Why is sentiment a strong predictor?\"\n\nNLP + finance = linguistics + quantitative analysis.\n\n#NLP #FinancialML #Transformers", handshake: "Financial Sentiment Analysis 📈\n\nBuilt NLP pipeline: 600K+ headlines → predictions\n\nArchitecture:\n→ 600K+ financial news headlines\n→ 7,000+ stock tickers\n→ FinBERT sentiment extraction\n→ XGBoost/LSTM predictions\n\nTechnology: Transformers, temporal features, SHAP\n\nSeeking: NLP / ML Engineering internships\nSkills: NLP, Transformers, FinBERT", category: "NLP & AI" },
+                { linkedin: "Shipped an AI-powered SQL assistant: natural language → SQL queries in production.\n\nStack: OpenAI GPT + LLaMA + Streamlit + PostgreSQL. Non-technical users query databases without touching SQL.\n\nThe hard part? Prompt engineering, input validation, edge cases. LLMOps > raw LLM training.\n\nLive demo: wasiq-aisql.streamlit.app\n\n#LLM #GenerativeAI #MLOps", handshake: "AI SQL Assistant in Production 🚀\n\nBuilt generative AI app: natural language → SQL\n\nTech Stack:\n• LLMs: OpenAI GPT + LLaMA\n• Frontend: Streamlit\n• Backend: PostgreSQL\n• Deployment: Full-stack system\n\nLessons: Prompt engineering + validation = harder than LLM integration.\n\nLive: wasiq-aisql.streamlit.app\n\nSeeking: ML Engineering internships", category: "NLP & AI" },
+                { linkedin: "Prompt engineering is a discipline now.\n\nOptimized prompts for SQL generation. Tested 10+ versions:\n• Few-shot examples (15% accuracy boost)\n• System roles (clarify context)\n• Error handling (graceful fallbacks)\n• Output formatting (structured JSON)\n\nBad prompt = garbage. Good prompt = reliable production.\n\n#LLMOps #PromptEngineering #GenerativeAI", handshake: "Prompt Engineering for Production 🎯\n\nOptimized prompts for SQL generation.\n\nTechniques:\n• Few-shot examples (teach by example)\n• System roles (context clarity)\n• Structured output (JSON format)\n• Error handling (fallbacks)\n• Versioning (track changes)\n\nResult: Reliable LLM systems.\n\nSeeking: LLMOps internships\nSkills: Prompt engineering, OpenAI API", category: "NLP & AI" },
+                { linkedin: "Sentiment analysis on YouTube comments: 50K+ comments → VADER + NRC Emotion Lexicon → insights.\n\nApplied VADER for polarity + NRC for emotions (joy, anger, fear, sadness).\n\nVisualizations with Matplotlib/Seaborn deliver audience insights.\n\nNLP → business intelligence.\n\n#NLP #SentimentAnalysis #TextAnalysis", handshake: "YouTube Sentiment Analysis 💬\n\nAnalyzed 50K+ comments for sentiment/emotions.\n\nProcess:\n• YouTube API data collection\n• VADER polarity detection\n• NRC emotion lexicon (joy, anger, fear, sadness)\n• Matplotlib/Seaborn visualization\n\nResult: Actionable audience insights.\n\nSeeking: NLP / Analytics internships\nSkills: VADER, NLTK, YouTube API", category: "NLP & AI" },
+                { linkedin: "Text preprocessing matters. Tokenization + stopword removal + lemmatization = cleaner data.\n\nProcessed 100K+ documents. Consistent preprocessing → better NLP models.\n\nDon't skip this step. Foundation matters.\n\n#NLP #TextPreprocessing #DataScience", handshake: "Text Preprocessing Fundamentals 📝\n\nCleaned 100K+ documents:\n• Tokenization (split into words)\n• Stopword removal (remove common words)\n• Lemmatization (standardize forms)\n• Lowercasing (consistency)\n\nResult: High-quality NLP features.\n\nSeeking: NLP / Data Science internships\nSkills: NLTK, preprocessing, regex", category: "NLP & AI" },
+                { linkedin: "Word embeddings transform text into vectors. Learned Word2Vec + GloVe + FastText.\n\nSame words have similar embeddings. \"King\" - \"Man\" + \"Woman\" ≈ \"Queen\".\n\nWord embeddings are the foundation of modern NLP.\n\n#NLP #WordEmbeddings #MachineLearning", handshake: "Word Embeddings: Text as Vectors 📊\n\nLearned representation learning:\n• Word2Vec (skip-gram, CBOW)\n• GloVe (global vectors)\n• FastText (subword information)\n\nKey insight: Similar words = similar vectors.\n\nApplications: Document similarity, clustering, classification.\n\nSeeking: NLP internships\nSkills: Word2Vec, embeddings, gensim", category: "NLP & AI" },
+                { linkedin: "Transformer models revolutionized NLP. Self-attention mechanisms let models focus on relevant context.\n\nLearned BERT, GPT architecture. Attention is all you need.\n\nTransformers > RNNs for most tasks.\n\n#Transformers #NLP #DeepLearning", handshake: "Transformers: The Modern Standard 🚀\n\nStudied Transformer architecture:\n• Self-attention (focus on relevant context)\n• Positional encoding (word order)\n• Multi-head attention (diverse perspectives)\n\nApplications: BERT, GPT, T5, specialized models.\n\nResult: State-of-the-art NLP performance.\n\nSeeking: NLP / ML Engineering internships\nSkills: Transformers, Hugging Face", category: "NLP & AI" },
+                { linkedin: "Data visualization tells stories. Built Tableau dashboards tracking student retention, engagement, KPIs.\n\nRaw metrics → visual stories → actionable insights.\n\nA good dashboard makes the answer obvious. Design for clarity.\n\n#DataVisualization #Tableau #Analytics", handshake: "Data Visualization & Dashboards 📊\n\nBuilt Tableau dashboards:\n• Student retention trends\n• Engagement metrics\n• Service performance KPIs\n• Cohort analysis\n\nPrinciple: Make the answer obvious.\n\nSeeking: Analytics / BI internships\nSkills: Tableau, Power BI, dashboard design", category: "Analytics" },
+                { linkedin: "A/B testing separates data-driven decisions from guesses.\n\nDesigned lift analysis testing marketing channels. P-value, confidence intervals, effect size.\n\nMost companies run A/B tests without understanding statistics. Learn hypothesis testing.\n\n#Statistics #ABTesting #Analytics", handshake: "A/B Testing & Statistical Rigor 🧪\n\nDesigned A/B testing framework:\n• Null hypothesis (no difference)\n• Sample size calculation\n• Test selection (t-test, chi-square)\n• P-value interpretation\n• Confidence intervals\n\nResult: Data-driven decisions.\n\nSeeking: Analytics internships\nSkills: Statistical testing, Python", category: "Analytics" },
+                { linkedin: "Data science is 50% communication.\n\nBuilt a 92% accuracy model. Presented to leadership. They didn't care.\n\nReframed: \"Prevents $2M annual fraud losses, 20% fewer false alerts.\"\n\nSuddenly: green light.\n\nTechnical excellence without communication = wasted effort.\n\n#DataScience #Communication #Analytics", handshake: "Data Science is 50% Communication 💬\n\n92% accuracy ❌ (leadership unmoved)\n\"$2M prevention + fewer alerts\" ✅ (approved)\n\nGap: Technical excellence ≠ business impact.\n\nLessons: Learn data storytelling + business translation.\n\nSeeking: Data Science roles\nSkills: Communication, business acumen", category: "Analytics" },
+                { linkedin: "Cohort analysis reveals user patterns. Segmented users by signup date, tracked retention/engagement across cohorts.\n\nWhich cohorts perform best? Why? When did behavior change?\n\nCohort analysis → retention insights.\n\n#Analytics #CohortAnalysis #DataScience", handshake: "Cohort Analysis for User Insights 👥\n\nSegmented users by signup date.\n\nMetrics tracked:\n• Retention rates (returning users)\n• Engagement levels (activity)\n• Lifetime value (revenue)\n• Churn patterns (why users leave)\n\nResult: Understand user behavior by group.\n\nSeeking: Analytics internships\nSkills: Cohort analysis, SQL, Python", category: "Analytics" },
+                { linkedin: "Funnel analysis shows where users drop off. Tracked: signup → onboarding → activation → retention.\n\nIdentified bottleneck at step 2. Fixed it. Improved conversion by 25%.\n\nEach step in the funnel tells a story.\n\n#Analytics #FunnelAnalysis #DataScience", handshake: "Funnel Analysis: Finding Bottlenecks 📉\n\nTracked user journey: signup → onboarding → activation\n\nResults:\n• Signup: 100%\n• Onboarding: 60% (bottleneck!)\n• Activation: 45%\n• Retention: 30%\n\nFixed onboarding → 25% conversion improvement.\n\nSeeking: Analytics / Product internships\nSkills: Funnel analysis, SQL", category: "Analytics" },
+                { linkedin: "RFM analysis (Recency, Frequency, Monetary) segments customers.\n\nHigh-value customers: recent activity, frequent purchases, high spend.\n\nLow-value: inactive, rare purchases, low spend.\n\nTarget retention efforts on high-value segments.\n\n#Analytics #CustomerSegmentation #DataScience", handshake: "RFM Analysis for Customer Value 💰\n\nSegmented customers using:\n• Recency (days since last purchase)\n• Frequency (number of purchases)\n• Monetary value (total spent)\n\nResult: Identify high-value customers → retention strategies.\n\nSeeking: Analytics / Marketing internships\nSkills: RFM analysis, SQL, segmentation", category: "Analytics" },
+                { linkedin: "Deep learning isn't magic, it's matrix multiplication at scale.\n\nTrained LSTM models on EEG data. RNN architectures for sequence prediction. 90%+ accuracy on clinical test sets.\n\nThe hard part? Knowing when to use LSTM vs CNN vs Transformer.\n\n#DeepLearning #TensorFlow #PyTorch", handshake: "Deep Learning in Healthcare 🧠\n\nBuilt neural networks on EEG data:\n• LSTM for sequences\n• Dense layers for predictions\n• 90%+ accuracy on test sets\n\nKey insight: Architecture matters. LSTM vs CNN vs Transformer depends on problem.\n\nSeeking: Deep Learning internships\nSkills: TensorFlow, PyTorch, LSTM", category: "Deep Learning" },
+                { linkedin: "Time series forecasting: stock prices, traffic, patient readmission.\n\nBuilt LSTM + rolling averages + momentum signals. Bitcoin price forecasting across multiple horizons.\n\nStationarity matters. Seasonal decomposition matters.\n\n#TimeSeries #LSTM #Forecasting", handshake: "Time Series Forecasting 📈\n\nBitcoin price prediction using:\n• LSTM networks (sequences)\n• Rolling averages (trends)\n• Momentum signals (technical analysis)\n• Multiple time horizons\n\nKey: Stationarity + seasonal decomposition.\n\nSeeking: Time Series / ML internships\nSkills: LSTM, ARIMA, statsmodels", category: "Deep Learning" },
+                { linkedin: "Convolutional Neural Networks (CNNs) detect spatial patterns.\n\nBuilt image classification model. Conv layers extract features. Dense layers classify.\n\nCNNs are foundational for computer vision.\n\n#ComputerVision #CNN #DeepLearning", handshake: "Convolutional Neural Networks 👁️\n\nBuilt CNN for image classification:\n• Conv layers (spatial features)\n• Pooling layers (dimensionality)\n• Dense layers (classification)\n\nApplications: Image recognition, object detection, medical imaging.\n\nSeeking: Computer Vision internships\nSkills: CNN, TensorFlow, Keras", category: "Deep Learning" },
+                { linkedin: "Recurrent Neural Networks (RNNs) process sequences. LSTMs address vanishing gradient problem.\n\nGated recurrent units (GRUs) are lighter alternatives.\n\nSequence modeling: text, time series, video.\n\n#RNN #LSTM #DeepLearning", handshake: "RNNs for Sequential Data 📊\n\nMastered RNN architectures:\n• Vanilla RNN (basic recurrence)\n• LSTM (long-term dependencies)\n• GRU (lightweight alternative)\n\nApplications: Language modeling, machine translation, time series.\n\nSeeking: Deep Learning internships\nSkills: RNN, LSTM, sequence modeling", category: "Deep Learning" },
+                { linkedin: "Autoencoders learn compressed representations. Encoder compresses. Decoder reconstructs.\n\nApplications: Dimensionality reduction, anomaly detection, denoising.\n\nUnsupervised learning → meaningful features.\n\n#Autoencoders #DeepLearning #UnsupervisedLearning", handshake: "Autoencoders for Dimensionality Reduction 🔍\n\nBuilt encoder-decoder architecture:\n• Encoder: High-dimensional → compressed\n• Decoder: Compressed → reconstructed\n\nApplications: Dimensionality reduction, anomaly detection, image denoising.\n\nSeeking: Deep Learning internships\nSkills: Autoencoders, TensorFlow", category: "Deep Learning" },
+                { linkedin: "Generative Adversarial Networks (GANs): Generator vs Discriminator.\n\nGenerator creates fake data. Discriminator distinguishes real vs fake.\n\nThey improve iteratively. Result: High-quality synthetic data.\n\n#GAN #DeepLearning #GenerativeAI", handshake: "GANs: Generative Models 🎨\n\nUnderstanding Generator vs Discriminator:\n• Generator: Creates synthetic data\n• Discriminator: Detects fake vs real\n• Adversarial training: Both improve\n\nApplications: Image generation, style transfer, data augmentation.\n\nSeeking: Deep Learning / AI internships\nSkills: GANs, adversarial training", category: "Deep Learning" },
+                { linkedin: "Just shipped a complete ML pipeline: data ingestion → preprocessing → 16 experiments → selection → deployment.\n\nFull stack: FastAPI + Streamlit + Docker + MLflow + Render.\n\nBuilding the model = 30%. Deploying reliably = 70%.\n\nIf you're only writing notebooks, you're not building products.\n\n#MLOps #Docker #FastAPI", handshake: "End-to-End ML Deployment 🚀\n\nPipeline: Data → Model → Production\n\nTech Stack:\n• FastAPI (backend REST endpoints)\n• Streamlit (frontend UI)\n• Docker (containerization)\n• MLflow (experiment tracking)\n• Render (cloud hosting)\n\nLessons: Model = 30%, deployment = 70%.\n\nSeeking: MLOps internships", category: "MLOps" },
+                { linkedin: "\"Works on my machine\" → Docker → \"Works everywhere.\"\n\nShipped FastAPI + Streamlit with docker-compose. Same dependencies, same environment, dev → prod. Zero surprises.\n\nIf you're not containerizing ML projects, you're limiting impact.\n\nDocker is non-negotiable.\n\n#Docker #MLOps #DevOps", handshake: "Docker: Production-Ready ML 🐳\n\nContainerizing ML applications:\n\nBefore Docker:\n❌ Dependencies conflicts\n❌ Environment mismatches\n\nAfter Docker:\n✅ Consistent environments\n✅ Reproducibility\n✅ Easy deployment\n\nEssential skill for ML engineers.\n\nSeeking: MLOps internships\nSkills: Docker, docker-compose", category: "MLOps" },
+                { linkedin: "Tracked 16 classification models in MLflow: hyperparameters, metrics, artifacts, everything.\n\nCompared side-by-side. Selected best by F1-score. Without MLflow, I'd be scrolling notebooks wondering which model was which.\n\nReproducibility is non-negotiable.\n\n#MLOps #MLflow #MachineLearning", handshake: "MLflow: Experiment Tracking 📊\n\nManaging 16 ML experiments:\n• Log parameters (hyperparameters)\n• Track metrics (accuracy, F1)\n• Store artifacts (models, plots)\n• Compare experiments\n• Deploy models\n\nResult: Reproducible, auditable ML.\n\nSeeking: MLOps internships\nSkills: MLflow, experiment tracking", category: "MLOps" },
+                { linkedin: "CI/CD for ML: automated testing + deployment.\n\nEvery commit triggers tests → builds Docker image → deploys to staging → production.\n\nReliable, repeatable releases.\n\n#MLOps #CI/CD #DevOps", handshake: "CI/CD for ML Systems 🔄\n\nAutomated pipeline:\n• Code commit\n• Run tests (unit, integration)\n• Build Docker image\n• Deploy to staging\n• Production deployment\n\nBenefit: Reliable, repeatable releases.\n\nSeeking: MLOps internships\nSkills: GitHub Actions, CI/CD, Docker", category: "MLOps" },
+                { linkedin: "Model versioning matters. Tracked model changes, retraining dates, performance metrics.\n\nWhen did performance degrade? Which model version caused it?\n\nModel registry = production safety net.\n\n#MLOps #ModelManagement #MachineLearning", handshake: "Model Versioning & Registry 📋\n\nManaging model lifecycle:\n• Version control (git for code + models)\n• Model registry (MLflow, DVC)\n• Performance tracking\n• Rollback capability\n\nCritical for production reliability.\n\nSeeking: MLOps internships\nSkills: MLflow, model versioning", category: "MLOps" },
+                { linkedin: "Model monitoring prevents silent failures. Tracked prediction latency, input data drift, output distribution shift.\n\nData changes. Your model performance degrades. You need alerts.\n\n#MLOps #Monitoring #ProductionML", handshake: "Model Monitoring in Production 📊\n\nTracked key metrics:\n• Prediction latency (response time)\n• Data drift (input distribution change)\n• Output shift (prediction distribution)\n• Error rates\n\nAlerts trigger when metrics degrade.\n\nSeeking: MLOps internships\nSkills: Monitoring, alerting, production systems", category: "MLOps" },
+                { linkedin: "Currently taking Statistical Learning, Data Modeling, Query Language this semester.\n\nDeep dive: clustering analysis, k-means, hierarchical clustering, silhouette analysis.\n\nRaw clustering = 20%. Feature engineering + interpretation = 80%.\n\nThis is what production ML looks like.\n\n#DataScience #StatisticalLearning #MachineLearning", handshake: "Statistical Learning This Semester 📚\n\nEnrolled in courses:\n• Statistical Learning (regression, classification)\n• Data Modeling (schema design)\n• Query Language (SQL)\n• Clustering analysis\n\nKey: Theory + practice. Academic rigor + production constraints.\n\nSeeking internships combining both.", category: "Career" },
+                { linkedin: "3+ years building ML systems across banking, healthcare, fintech. Here's what actually matters:\n\n1. Feature engineering > model choice\n2. Class imbalance is everywhere (use SMOTE)\n3. SHAP > black boxes\n4. Docker/MLflow/FastAPI = career skills\n5. Communication > fancy algorithms\n\nOpen to internships building real systems.\n\n#DataScience #MLEngineering", handshake: "3 Years of ML Lessons 💡\n\nLessons that matter:\n1️⃣ Features > models (always)\n2️⃣ Class imbalance everywhere\n3️⃣ Interpretability mandatory\n4️⃣ MLOps = career skills\n5️⃣ Business impact > complexity\n\nSeeking: Data Science / ML internships Summer 2025\nReady to build systems at scale.", category: "Career" },
+                { linkedin: "2025 trends I'm watching:\n\n1. LLMOps (prompt engineering frameworks)\n2. Multi-modal AI (text + images + audio)\n3. Edge ML (on-device models)\n4. Explainability (SHAP mandatory)\n\nStaying current = competitive advantage.\n\nLooking for internships where I can grow with these.\n\n#AI #MachineLearning #FutureOfML", handshake: "2025 ML Trends 🚀\n\nWhat's trending:\n1. LLMOps: Production LLM systems\n2. Multi-modal: Text + vision unified\n3. Edge ML: On-device inference\n4. Explainability: SHAP/LIME standard\n\nPersonal focus: Building with these trends.\n\nSeeking: AI / ML internships\nReady for cutting-edge work.", category: "Career" },
+                { linkedin: "Building consistently compounds. Posted every day for 2 months. Visibility = recruiter attention.\n\nRecruiter DMs started flowing. Internship offers followed.\n\nConsistency > perfection. Show up daily.\n\n#DataScience #Networking #Career", handshake: "Consistency Gets Results 🚀\n\nPosting daily for 2 months:\n✓ Recruiter visibility\n✓ Profile ranking boost\n✓ DM inquiries\n✓ Interview opportunities\n\nProof: Consistency > perfection.\n\nSeeking: Data Science / ML internships\nReady to talk about my work daily.", category: "Career" },
+                { linkedin: "Just accepted an internship at a top fintech company. Here's why recruiters reached out:\n\n1. Consistent LinkedIn posting (daily)\n2. GitHub portfolio with real projects\n3. Live demos (streamlit.app)\n4. Clear technical communication\n5. Specific about what I wanted\n\nMake yourself findable.\n\n#DataScience #Career #Internship", handshake: "How I Got the Internship 💼\n\nWhat worked:\n✓ Daily LinkedIn posts\n✓ Real GitHub projects\n✓ Live project demos\n✓ Clear technical communication\n✓ Specific internship targets\n\nRecruiter finding = easy when you're visible.\n\nNow building AI/ML systems in production.\n\nYou can do this too.", category: "Career" },
             ];
 
-            const [posts, setPosts] = useState(allPostThemes);
-            const [currentDay, setCurrentDay] = useState(0);
-            const [copied, setCopied] = useState(false);
+            const [posts, setPosts] = useState(allPosts);
+            const [currentIndex, setCurrentIndex] = useState(0);
             const [activePlatform, setActivePlatform] = useState('linkedin');
+            const [copied, setCopied] = useState(false);
 
-            const post = posts[currentDay % posts.length];
-            const currentText = activePlatform === 'linkedin' ? post.linkedin : post.handshake;
+            const currentPost = posts[currentIndex];
+            const currentContent = activePlatform === 'linkedin' ? currentPost.linkedin : currentPost.handshake;
 
-            const copyToClipboard = () => {
-                navigator.clipboard.writeText(currentText);
+            const copyPost = () => {
+                navigator.clipboard.writeText(currentContent);
                 setCopied(true);
                 setTimeout(() => setCopied(false), 2000);
             };
 
-            const removeCurrentPost = () => {
-                const newPosts = posts.filter((_, index) => index !== (currentDay % posts.length));
+            const deletePost = () => {
+                const newPosts = posts.filter((_, idx) => idx !== currentIndex);
                 setPosts(newPosts);
-                if (currentDay >= newPosts.length) {
-                    setCurrentDay(Math.max(0, currentDay - 1));
+                if (currentIndex >= newPosts.length && currentIndex > 0) {
+                    setCurrentIndex(currentIndex - 1);
                 }
-                alert(`Post removed! ${newPosts.length} posts remaining.`);
-            };
-
-            const generateNewPost = () => {
-                const categories = ['Data Engineering', 'Machine Learning', 'NLP & AI', 'Analytics', 'Deep Learning', 'MLOps', 'Career'];
-                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-                
-                const categoryPosts = allPostThemes.filter(p => p.category === randomCategory);
-                if (categoryPosts.length > 0) {
-                    const randomPost = categoryPosts[Math.floor(Math.random() * categoryPosts.length)];
-                    
-                    // Create variations instead of checking for duplicates
-                    const variations = [
-                        {
-                            ...randomPost,
-                            day: `${randomPost.day} (Day ${posts.length + 1})`,
-                            linkedin: `${randomPost.linkedin}\n\n[Fresh perspective daily]`,
-                            handshake: `${randomPost.handshake}\n\nBuilding consistently.`,
-                        },
-                        {
-                            ...randomPost,
-                            day: `${randomPost.day} - New Angle`,
-                            linkedin: `Here's another angle on this:\n\n${randomPost.linkedin}`,
-                            handshake: `Continued learning:\n\n${randomPost.handshake}`,
-                        },
-                        {
-                            ...randomPost,
-                            day: `${randomPost.day} - Deep Dive`,
-                            linkedin: `Digging deeper:\n\n${randomPost.linkedin}`,
-                            handshake: `Building on this:\n\n${randomPost.handshake}`,
-                        }
-                    ];
-                    
-                    const newVariation = variations[Math.floor(Math.random() * variations.length)];
-                    const newPosts = [...posts, newVariation];
-                    setPosts(newPosts);
-                    setCurrentDay(newPosts.length - 1);
-                    alert(`✨ New post generated! Now at ${newPosts.length} posts total. Keep generating for unlimited daily posts!`);
-                }
+                alert(`Post deleted! ${newPosts.length} posts remaining.`);
             };
 
             const nextPost = () => {
-                setCurrentDay((prev) => prev + 1);
+                if (currentIndex < posts.length - 1) {
+                    setCurrentIndex(currentIndex + 1);
+                }
             };
 
             const prevPost = () => {
-                setCurrentDay((prev) => (prev > 0 ? prev - 1 : 0));
+                if (currentIndex > 0) {
+                    setCurrentIndex(currentIndex - 1);
+                }
             };
 
             return (
                 <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-6">
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-3xl mx-auto">
                         {/* Header */}
-                        <div className="mb-12 text-center">
-                            <div className="flex items-center justify-center gap-2 mb-4">
-                                <span className="text-4xl">✨</span>
-                                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                                    LinkedIn + Handshake
-                                </h1>
-                                <span className="text-4xl">✨</span>
-                            </div>
-                            <p className="text-slate-400 text-lg">AI • ML • LLMs • Data Science Internship 2025</p>
-                            <p className="text-slate-500 text-sm mt-2">Dynamic posts. Remove what you don't like. Generate new ones.</p>
+                        <div className="text-center mb-8">
+                            <h1 className="text-4xl font-bold text-white mb-2">
+                                30-Day Post Generator
+                            </h1>
+                            <p className="text-blue-300 text-lg">{posts.length} Posts Ready to Go</p>
+                            <p className="text-slate-400 text-sm mt-2">LinkedIn + Handshake | Remove What You Don't Like</p>
                         </div>
 
-                        {/* Platform & Control Buttons */}
-                        <div className="flex flex-col gap-4 mb-8">
-                            <div className="flex gap-4 justify-center">
-                                <button
-                                    onClick={() => setActivePlatform('linkedin')}
-                                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                                        activePlatform === 'linkedin'
-                                            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg'
-                                            : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                                    }`}
-                                >
-                                    <span>💼</span>
-                                    LinkedIn
-                                </button>
-                                <button
-                                    onClick={() => setActivePlatform('handshake')}
-                                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                                        activePlatform === 'handshake'
-                                            ? 'bg-gradient-to-r from-green-600 to-emerald-500 text-white shadow-lg'
-                                            : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                                    }`}
-                                >
-                                    <span>🤝</span>
-                                    Handshake
-                                </button>
-
+                        {/* Platform Buttons */}
+                        <div className="flex gap-3 mb-6 justify-center">
+                            <button
+                                onClick={() => setActivePlatform('linkedin')}
+                                className={`px-8 py-3 rounded-lg font-semibold transition-all text-lg ${
+                                    activePlatform === 'linkedin'
+                                        ? 'bg-blue-600 text-white shadow-lg'
+                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                }`}
+                            >
+                                💼 LinkedIn
+                            </button>
+                            <button
+                                onClick={() => setActivePlatform('handshake')}
+                                className={`px-8 py-3 rounded-lg font-semibold transition-all text-lg ${
+                                    activePlatform === 'handshake'
+                                        ? 'bg-green-600 text-white shadow-lg'
+                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                }`}
+                            >
+                                🤝 Handshake
+                            </button>
+                        </div>
 
                         {/* Post Card */}
-                        <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 mb-8 shadow-2xl fade-in">
-                            {/* Meta */}
-                            <div className="flex items-center justify-between mb-6 pb-6 border-b border-slate-700">
+                        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 mb-8 shadow-2xl">
+                            {/* Header */}
+                            <div className="flex justify-between items-start mb-6 pb-4 border-b border-slate-700">
                                 <div>
-                                    <div className="text-sm text-cyan-400 font-semibold tracking-wide mb-1">{post.day}</div>
-                                    <h2 className="text-2xl font-bold text-white">{post.theme}</h2>
-                                    <p className="text-slate-400 text-sm mt-1">Category: {post.category}</p>
+                                    <p className="text-blue-300 font-semibold text-sm">{currentPost.category}</p>
+                                    <p className="text-slate-400 text-xs mt-1">Post {currentIndex + 1} of {posts.length}</p>
                                 </div>
-                                <div className="text-right">
-                                    <div className="text-4xl font-bold text-slate-600">{String((currentDay % posts.length) + 1).padStart(2, '0')}</div>
-                                    <div className="text-xs text-slate-500">of {posts.length}</div>
-                                </div>
+                                <button
+                                    onClick={deletePost}
+                                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-all text-sm"
+                                >
+                                    🗑️ Remove
+                                </button>
                             </div>
 
-                            {/* Post Title */}
-                            <div className="mb-6">
-                                <h3 className="text-xl font-semibold text-white mb-4">{post.title}</h3>
-                                <p className={`text-xs font-semibold mb-4 ${activePlatform === 'linkedin' ? 'text-blue-400' : 'text-green-400'}`}>
-                                    {activePlatform === 'linkedin' ? '📱 LINKEDIN VERSION' : '🤝 HANDSHAKE VERSION'}
+                            {/* Content */}
+                            <div className="bg-slate-900/50 p-6 rounded-lg mb-6 border border-slate-700 min-h-48">
+                                <p className="text-slate-100 whitespace-pre-wrap leading-relaxed">
+                                    {currentContent}
                                 </p>
                             </div>
 
-                            {/* Post Content */}
-                            <div className="mb-6">
-                                <div className="text-slate-200 leading-relaxed whitespace-pre-wrap text-base bg-slate-900/50 p-6 rounded-lg border border-slate-700 max-h-96 overflow-y-auto">
-                                    {currentText}
-                                </div>
-                            </div>
-
-                            {/* Action Buttons */}
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={copyToClipboard}
-                                    className={`flex-1 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl ${
-                                        activePlatform === 'linkedin'
-                                            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600'
-                                            : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600'
-                                    }`}
-                                >
-                                    <span>📋</span>
-                                    {copied ? 'Copied!' : 'Copy Post'}
-                                </button>
-                                <a
-                                    href={activePlatform === 'linkedin' ? 'https://www.linkedin.com' : 'https://app.joinhandshake.com'}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
-                                >
-                                    Post →
-                                </a>
-                            </div>
+                            {/* Copy Button */}
+                            <button
+                                onClick={copyPost}
+                                className={`w-full px-6 py-3 rounded-lg font-semibold transition-all text-lg flex items-center justify-center gap-2 ${
+                                    copied
+                                        ? 'bg-green-600 text-white'
+                                        : activePlatform === 'linkedin'
+                                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                                        : 'bg-green-600 hover:bg-green-700 text-white'
+                                }`}
+                            >
+                                {copied ? '✓ Copied to Clipboard!' : '📋 Copy Post'}
+                            </button>
                         </div>
 
                         {/* Navigation */}
-                        <div className="flex items-center justify-between mb-8">
+                        <div className="flex gap-3 justify-between">
                             <button
                                 onClick={prevPost}
-                                disabled={currentDay === 0}
-                                className="px-6 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                                disabled={currentIndex === 0}
+                                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white rounded-lg font-semibold transition-all disabled:cursor-not-allowed"
                             >
                                 ← Previous
                             </button>
-                            
-                            <div className="text-center">
-                                <div className="text-slate-400 text-sm">Dynamic Posts</div>
-                                <div className="text-slate-300 font-semibold">{posts.length} posts available</div>
+
+                            <div className="text-center text-slate-300">
+                                <p className="font-semibold text-sm">Day {currentIndex + 1}</p>
+                                <p className="text-xs mt-1">{posts.length} posts left</p>
                             </div>
 
                             <button
                                 onClick={nextPost}
-                                className={`px-6 py-2 text-white rounded-lg transition-all ${
-                                    activePlatform === 'linkedin'
-                                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600'
-                                        : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600'
-                                }`}
+                                disabled={currentIndex === posts.length - 1}
+                                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white rounded-lg font-semibold transition-all disabled:cursor-not-allowed"
                             >
                                 Next →
                             </button>
                         </div>
 
-                        {/* Info Box */}
-                        <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-slate-300 text-sm space-y-3">
-                            <p className="font-semibold text-cyan-400">💡 How to use:</p>
-                            <ul className="space-y-2 ml-4">
+                        {/* Info */}
+                        <div className="mt-8 p-6 bg-slate-800/30 border border-slate-700 rounded-lg text-slate-300 text-sm">
+                            <p className="font-semibold text-cyan-400 mb-3">How to use:</p>
+                            <ul className="space-y-2 ml-4 text-sm">
                                 <li>✓ Choose platform (LinkedIn or Handshake)</li>
-                                <li>✓ Read the post (optimized for that platform)</li>
-                                <li>✓ <strong>Remove posts you don't like</strong> (🗑️ button)</li>
-                                <li>✓ <strong>Generate new posts</strong> (🔄 button) from different topics</li>
+                                <li>✓ Read the post</li>
                                 <li>✓ Click "Copy Post" to copy to clipboard</li>
-                                <li>✓ Paste on the platform and review/edit if needed</li>
-                                <li>✓ Post! (You control what goes live)</li>
+                                <li>✓ Paste on LinkedIn/Handshake and publish</li>
+                                <li>✓ Don't like a post? Click "Remove" to delete it</li>
+                                <li>✓ Navigate with Previous/Next buttons</li>
+                                <li>✓ Post every day for a month = consistent visibility</li>
                             </ul>
-                            <p className="text-xs text-slate-500 mt-4">🎯 <strong>Topics covered:</strong> Data Engineering, Machine Learning, NLP & AI, Analytics, Deep Learning, MLOps, Career insights.</p>
-                            <p className="text-xs text-slate-500">💼 Each post is optimized per platform - LinkedIn is longer/narrative, Handshake is structured/action-oriented.</p>
                         </div>
                     </div>
                 </div>
