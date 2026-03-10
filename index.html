@@ -788,15 +788,33 @@ Seeking: Data Science / ML Engineering internships Summer 2025`,
                 if (categoryPosts.length > 0) {
                     const randomPost = categoryPosts[Math.floor(Math.random() * categoryPosts.length)];
                     
-                    // Check if post already exists
-                    if (!posts.find(p => p.title === randomPost.title)) {
-                        const newPosts = [...posts, randomPost];
-                        setPosts(newPosts);
-                        setCurrentDay(newPosts.length - 1);
-                        alert(`New post generated! Now at ${newPosts.length} total posts.`);
-                    } else {
-                        alert('This post already exists in your list!');
-                    }
+                    // Create variations instead of checking for duplicates
+                    const variations = [
+                        {
+                            ...randomPost,
+                            day: `${randomPost.day} (Day ${posts.length + 1})`,
+                            linkedin: `${randomPost.linkedin}\n\n[Fresh perspective daily]`,
+                            handshake: `${randomPost.handshake}\n\nBuilding consistently.`,
+                        },
+                        {
+                            ...randomPost,
+                            day: `${randomPost.day} - New Angle`,
+                            linkedin: `Here's another angle on this:\n\n${randomPost.linkedin}`,
+                            handshake: `Continued learning:\n\n${randomPost.handshake}`,
+                        },
+                        {
+                            ...randomPost,
+                            day: `${randomPost.day} - Deep Dive`,
+                            linkedin: `Digging deeper:\n\n${randomPost.linkedin}`,
+                            handshake: `Building on this:\n\n${randomPost.handshake}`,
+                        }
+                    ];
+                    
+                    const newVariation = variations[Math.floor(Math.random() * variations.length)];
+                    const newPosts = [...posts, newVariation];
+                    setPosts(newPosts);
+                    setCurrentDay(newPosts.length - 1);
+                    alert(`✨ New post generated! Now at ${newPosts.length} posts total. Keep generating for unlimited daily posts!`);
                 }
             };
 
@@ -849,25 +867,7 @@ Seeking: Data Science / ML Engineering internships Summer 2025`,
                                     <span>🤝</span>
                                     Handshake
                                 </button>
-                            </div>
 
-                            <div className="flex gap-3 justify-center">
-                                <button
-                                    onClick={generateNewPost}
-                                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
-                                >
-                                    <span>🔄</span>
-                                    Generate New Post
-                                </button>
-                                <button
-                                    onClick={removeCurrentPost}
-                                    className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
-                                >
-                                    <span>🗑️</span>
-                                    Remove This Post
-                                </button>
-                            </div>
-                        </div>
 
                         {/* Post Card */}
                         <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 mb-8 shadow-2xl fade-in">
