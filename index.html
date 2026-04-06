@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Generator V2 🚀</title>
+    <title>AI Daily Post Generator 🚀</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -16,154 +16,103 @@
 const { useState, useEffect } = React;
 
 function PostGenerator() {
-    const [posts, setPosts] = useState([]);
-    const [activePlatform, setActivePlatform] = useState('linkedin');
+    const [interest, setInterest] = useState('Data Engineering, ML, NLP');
+    const [post, setPost] = useState('');
     const [copied, setCopied] = useState(false);
     const [streak, setStreak] = useState(0);
-    const [filter, setFilter] = useState('All');
 
-    const [newLinkedIn, setNewLinkedIn] = useState('');
-    const [newHandshake, setNewHandshake] = useState('');
-    const [newCategory, setNewCategory] = useState('General');
-
-    // Load from localStorage
     useEffect(() => {
-        const savedPosts = localStorage.getItem('posts');
         const savedStreak = localStorage.getItem('streak');
-        if (savedPosts) setPosts(JSON.parse(savedPosts));
         if (savedStreak) setStreak(parseInt(savedStreak));
     }, []);
 
-    // Save to localStorage
     useEffect(() => {
-        localStorage.setItem('posts', JSON.stringify(posts));
         localStorage.setItem('streak', streak);
-    }, [posts, streak]);
+    }, [streak]);
 
-    // Daily post logic
-    const getTodayIndex = () => {
-        if (posts.length === 0) return 0;
-        const startDate = new Date("2026-01-01");
-        const today = new Date();
-        const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-        return diff % posts.length;
-    };
+    const generatePost = () => {
+        const topics = interest.split(',');
+        const randomTopic = topics[Math.floor(Math.random() * topics.length)].trim();
 
-    const filteredPosts = filter === 'All'
-        ? posts
-        : posts.filter(p => p.category === filter);
+        const templates = [
+            `🚀 Today I explored ${randomTopic}.
 
-    const currentIndex = filteredPosts.length ? getTodayIndex() % filteredPosts.length : 0;
-    const currentPost = filteredPosts[currentIndex];
+One thing I realized:
+Consistency beats intensity.
 
-    const currentContent = currentPost
-        ? activePlatform === 'linkedin'
-            ? currentPost.linkedin
-            : currentPost.handshake
-        : '';
+Small improvements daily compound into massive growth.
 
-    const addPost = () => {
-        if (!newLinkedIn.trim() && !newHandshake.trim()) return;
-        const newPost = { linkedin: newLinkedIn, handshake: newHandshake, category: newCategory };
-        setPosts([...posts, newPost]);
-        setNewLinkedIn('');
-        setNewHandshake('');
-        setNewCategory('General');
-    };
+#Learning #${randomTopic.replace(/ /g, '')}`,
 
-    const deletePost = () => {
-        const updated = posts.filter(p => p !== currentPost);
-        setPosts(updated);
+            `💡 Quick insight on ${randomTopic}:
+
+Most people overcomplicate it.
+
+The real skill is understanding fundamentals and applying them consistently.
+
+#${randomTopic.replace(/ /g, '')} #GrowthMindset`,
+
+            `📊 What I learned today in ${randomTopic}:
+
+→ Focus on fundamentals
+→ Build projects
+→ Stay consistent
+
+Simple, but powerful.
+
+#DataScience #${randomTopic.replace(/ /g, '')}`
+        ];
+
+        const newPost = templates[Math.floor(Math.random() * templates.length)];
+        setPost(newPost);
     };
 
     const copyPost = () => {
-        if (!currentContent) return;
-        navigator.clipboard.writeText(currentContent);
+        navigator.clipboard.writeText(post);
         setCopied(true);
         setStreak(streak + 1);
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const openLinkedIn = () => {
-        window.open('https://www.linkedin.com/feed/', '_blank');
-    };
-
-    const generatePost = () => {
-        const ideas = [
-            "What I learned about data engineering today...",
-            "One mistake I made in ML and how I fixed it...",
-            "A SQL trick that saved me hours...",
-            "How I optimized a slow pipeline...",
-            "My biggest learning this week in AI..."
-        ];
-        const random = ideas[Math.floor(Math.random() * ideas.length)];
-        setNewLinkedIn(random);
-    };
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-black to-slate-900 text-white p-6">
-            <div className="max-w-3xl mx-auto">
+        <div className="min-h-screen bg-black text-white p-6">
+            <div className="max-w-2xl mx-auto">
 
-                <h1 className="text-4xl font-bold text-center mb-4">🚀 Post Generator V2</h1>
-                <p className="text-center text-slate-400 mb-6">Daily LinkedIn Growth System</p>
+                <h1 className="text-4xl font-bold text-center mb-4">🤖 AI Daily Post Generator</h1>
+                <p className="text-center text-slate-400 mb-6">Your Personal LinkedIn Growth Engine</p>
 
-                <div className="text-center mb-4 text-yellow-400 font-semibold">
-                    🔥 Streak: {streak} days
+                <div className="text-center text-yellow-400 mb-6">🔥 Streak: {streak} days</div>
+
+                {/* Interests */}
+                <div className="mb-6">
+                    <label className="block mb-2">Your Interests (comma separated)</label>
+                    <input
+                        value={interest}
+                        onChange={(e) => setInterest(e.target.value)}
+                        className="w-full p-3 bg-slate-800 rounded"
+                    />
                 </div>
 
-                {/* Platform Switch */}
-                <div className="flex justify-center gap-3 mb-6">
-                    <button onClick={() => setActivePlatform('linkedin')} className="bg-blue-600 px-4 py-2 rounded">LinkedIn</button>
-                    <button onClick={() => setActivePlatform('handshake')} className="bg-green-600 px-4 py-2 rounded">Handshake</button>
-                </div>
+                {/* Generate */}
+                <button
+                    onClick={generatePost}
+                    className="w-full bg-purple-600 py-3 rounded mb-6"
+                >
+                    ⚡ Generate Today's Post
+                </button>
 
-                {/* Filter */}
-                <div className="mb-4">
-                    <select onChange={(e) => setFilter(e.target.value)} className="w-full p-2 bg-slate-800 rounded">
-                        <option>All</option>
-                        <option>Data Engineering</option>
-                        <option>Machine Learning</option>
-                        <option>NLP</option>
-                        <option>Career</option>
-                    </select>
-                </div>
-
-                {/* Add Post */}
-                <div className="bg-slate-800 p-4 rounded mb-6">
-                    <textarea placeholder="LinkedIn Post" value={newLinkedIn} onChange={(e)=>setNewLinkedIn(e.target.value)} className="w-full p-2 mb-2 bg-slate-700 rounded"/>
-                    <textarea placeholder="Handshake Post" value={newHandshake} onChange={(e)=>setNewHandshake(e.target.value)} className="w-full p-2 mb-2 bg-slate-700 rounded"/>
-                    <input placeholder="Category" value={newCategory} onChange={(e)=>setNewCategory(e.target.value)} className="w-full p-2 mb-2 bg-slate-700 rounded"/>
-                    <div className="flex gap-2">
-                        <button onClick={addPost} className="bg-blue-600 px-4 py-2 rounded">Add</button>
-                        <button onClick={generatePost} className="bg-purple-600 px-4 py-2 rounded">⚡ Generate Idea</button>
-                    </div>
-                </div>
-
-                {/* Post Display */}
-                {currentPost ? (
+                {/* Output */}
+                {post && (
                     <div className="bg-slate-800 p-6 rounded">
-                        <p className="text-sm text-blue-300 mb-2">{currentPost.category}</p>
+                        <div className="whitespace-pre-wrap mb-4">{post}</div>
 
-                        <div className="bg-slate-700 p-4 rounded mb-4 whitespace-pre-wrap">
-                            {currentContent}
-                        </div>
-
-                        <div className="flex gap-2 flex-wrap">
-                            <button onClick={copyPost} className="bg-green-600 px-4 py-2 rounded">
-                                {copied ? 'Copied!' : '📋 Copy'}
-                            </button>
-
-                            <button onClick={openLinkedIn} className="bg-blue-700 px-4 py-2 rounded">
-                                🚀 Open LinkedIn
-                            </button>
-
-                            <button onClick={deletePost} className="bg-red-600 px-4 py-2 rounded">
-                                Delete
-                            </button>
-                        </div>
+                        <button
+                            onClick={copyPost}
+                            className="bg-green-600 px-4 py-2 rounded"
+                        >
+                            {copied ? 'Copied!' : '📋 Copy & Post'}
+                        </button>
                     </div>
-                ) : (
-                    <p className="text-center text-slate-400">No posts yet</p>
                 )}
 
             </div>
