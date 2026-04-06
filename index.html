@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Daily Post Generator 🚀</title>
+    <title>AI Daily Post Generator (LLM Powered) 🚀</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -18,90 +18,90 @@ const { useState, useEffect } = React;
 function PostGenerator() {
     const [interest, setInterest] = useState('Data Engineering, ML, NLP');
     const [post, setPost] = useState('');
-    const [copied, setCopied] = useState(false);
-    const [streak, setStreak] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [apiKey, setApiKey] = useState('');
 
-    useEffect(() => {
-        const savedStreak = localStorage.getItem('streak');
-        if (savedStreak) setStreak(parseInt(savedStreak));
-    }, []);
+    // FREE LLM: OpenRouter (supports many free models)
+    const generatePost = async () => {
+        if (!apiKey) {
+            alert("Enter your OpenRouter API key");
+            return;
+        }
 
-    useEffect(() => {
-        localStorage.setItem('streak', streak);
-    }, [streak]);
+        setLoading(true);
 
-    const generatePost = () => {
-        const topics = interest.split(',');
-        const randomTopic = topics[Math.floor(Math.random() * topics.length)].trim();
+        const prompt = `Write a LinkedIn post for a Master's student in Data Science interested in ${interest}.
 
-        const templates = [
-            `🚀 Today I explored ${randomTopic}.
+Make it:
+- Engaging
+- Personal
+- Professional
+- Include hook + insights + hashtags
+- Keep it under 150 words`;
 
-One thing I realized:
-Consistency beats intensity.
+        try {
+            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${apiKey}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "mistralai/mistral-7b-instruct:free",
+                    messages: [
+                        { role: "user", content: prompt }
+                    ]
+                })
+            });
 
-Small improvements daily compound into massive growth.
+            const data = await res.json();
+            const text = data.choices?.[0]?.message?.content || "Error generating post";
+            setPost(text);
+        } catch (err) {
+            setPost("Error connecting to LLM");
+        }
 
-#Learning #${randomTopic.replace(/ /g, '')}`,
-
-            `💡 Quick insight on ${randomTopic}:
-
-Most people overcomplicate it.
-
-The real skill is understanding fundamentals and applying them consistently.
-
-#${randomTopic.replace(/ /g, '')} #GrowthMindset`,
-
-            `📊 What I learned today in ${randomTopic}:
-
-→ Focus on fundamentals
-→ Build projects
-→ Stay consistent
-
-Simple, but powerful.
-
-#DataScience #${randomTopic.replace(/ /g, '')}`
-        ];
-
-        const newPost = templates[Math.floor(Math.random() * templates.length)];
-        setPost(newPost);
+        setLoading(false);
     };
 
     const copyPost = () => {
         navigator.clipboard.writeText(post);
-        setCopied(true);
-        setStreak(streak + 1);
-        setTimeout(() => setCopied(false), 2000);
+        alert("Copied!");
     };
 
     return (
         <div className="min-h-screen bg-black text-white p-6">
             <div className="max-w-2xl mx-auto">
 
-                <h1 className="text-4xl font-bold text-center mb-4">🤖 AI Daily Post Generator</h1>
-                <p className="text-center text-slate-400 mb-6">Your Personal LinkedIn Growth Engine</p>
+                <h1 className="text-4xl font-bold text-center mb-4">🤖 AI Post Generator (FREE LLM)</h1>
 
-                <div className="text-center text-yellow-400 mb-6">🔥 Streak: {streak} days</div>
-
-                {/* Interests */}
-                <div className="mb-6">
-                    <label className="block mb-2">Your Interests (comma separated)</label>
+                {/* API KEY */}
+                <div className="mb-4">
                     <input
-                        value={interest}
-                        onChange={(e) => setInterest(e.target.value)}
+                        type="password"
+                        placeholder="Enter OpenRouter API Key"
+                        value={apiKey}
+                        onChange={(e)=>setApiKey(e.target.value)}
                         className="w-full p-3 bg-slate-800 rounded"
                     />
                 </div>
 
-                {/* Generate */}
+                {/* Interests */}
+                <div className="mb-4">
+                    <input
+                        value={interest}
+                        onChange={(e)=>setInterest(e.target.value)}
+                        className="w-full p-3 bg-slate-800 rounded"
+                    />
+                </div>
+
                 <button
                     onClick={generatePost}
                     className="w-full bg-purple-600 py-3 rounded mb-6"
                 >
-                    ⚡ Generate Today's Post
+                    {loading ? 'Generating...' : '⚡ Generate AI Post'}
                 </button>
 
-                {/* Output */}
                 {post && (
                     <div className="bg-slate-800 p-6 rounded">
                         <div className="whitespace-pre-wrap mb-4">{post}</div>
@@ -110,7 +110,7 @@ Simple, but powerful.
                             onClick={copyPost}
                             className="bg-green-600 px-4 py-2 rounded"
                         >
-                            {copied ? 'Copied!' : '📋 Copy & Post'}
+                            📋 Copy
                         </button>
                     </div>
                 )}
